@@ -66,19 +66,28 @@ export const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({
     <Card
       elevation={0}
       sx={{
-        borderRadius: '16px',
+        borderRadius: { xs: '14px', sm: '16px' },
         border: '1px solid',
         borderColor: 'divider',
         bgcolor: 'background.paper',
       }}
     >
-      <CardContent sx={{ p: 3 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-          <Box>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+      <CardContent sx={{ p: { xs: 2, sm: 2.5, md: 3 } }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            justifyContent: 'space-between',
+            gap: { xs: 1.5, sm: 2 },
+            mb: 2.5,
+          }}
+        >
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, fontSize: { xs: '1.05rem', sm: '1.2rem' } }}>
               API Access Keys
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
               Generate secret tokens for programmatic API integration and custom CLI tools.
             </Typography>
           </Box>
@@ -87,80 +96,152 @@ export const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({
             size="small"
             startIcon={<AddIcon />}
             onClick={() => setOpenModal(true)}
+            sx={{
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+              alignSelf: { xs: 'stretch', sm: 'auto' },
+              fontWeight: 600,
+              py: { xs: 0.85, sm: 0.75 },
+              px: { xs: 2, sm: 2.25 },
+            }}
           >
             Create Secret Key
           </AppButton>
         </Box>
 
-        <List disablePadding>
-          {apiKeys.map((key) => (
-            <ListItem
-              key={key.id}
-              sx={{
-                my: 1,
-                p: 2,
-                borderRadius: '12px',
-                border: '1px solid',
-                borderColor: 'divider',
-                bgcolor: 'action.hover',
-                display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: { xs: 'flex-start', sm: 'center' },
-                justifyContent: 'space-between',
-                gap: 1.5,
-              }}
-            >
-              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1.5 }}>
+        {apiKeys.length === 0 ? (
+          <Box
+            sx={{
+              py: 4,
+              px: 2,
+              textAlign: 'center',
+              borderRadius: '12px',
+              border: '1px dashed',
+              borderColor: 'divider',
+              bgcolor: 'action.hover',
+            }}
+          >
+            <KeyIcon sx={{ fontSize: 32, color: 'text.disabled', mb: 1 }} />
+            <Typography variant="subtitle2" color="text.primary" sx={{ fontWeight: 600 }}>
+              No API Keys Created Yet
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Click &quot;Create Secret Key&quot; above to generate your first developer access token.
+            </Typography>
+          </Box>
+        ) : (
+          <List disablePadding>
+            {apiKeys.map((key) => (
+              <ListItem
+                key={key.id}
+                sx={{
+                  my: 1,
+                  p: { xs: 1.5, sm: 2 },
+                  borderRadius: '12px',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  bgcolor: 'action.hover',
+                  display: 'flex',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  alignItems: { xs: 'stretch', md: 'center' },
+                  justifyContent: 'space-between',
+                  gap: { xs: 1.25, sm: 1.5 },
+                  transition: 'all 0.15s ease',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                  },
+                }}
+              >
+                {/* Left Side: Icon + Name + Masked Token */}
+                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1.5, minWidth: 0, flex: 1 }}>
+                  <Box
+                    sx={{
+                      p: 1,
+                      borderRadius: '8px',
+                      bgcolor: 'action.selected',
+                      color: 'primary.main',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <KeyIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+                  </Box>
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                    <Typography
+                      variant="subtitle2"
+                      noWrap
+                      sx={{ fontWeight: 700, fontSize: { xs: '0.88rem', sm: '0.92rem' } }}
+                    >
+                      {key.name}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      noWrap
+                      sx={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        display: 'block',
+                        fontSize: { xs: '0.74rem', sm: '0.8rem' },
+                        mt: 0.25,
+                      }}
+                    >
+                      {key.keyPreview}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                {/* Right Side: Created Date + Actions */}
                 <Box
                   sx={{
-                    p: 1,
-                    borderRadius: '8px',
-                    bgcolor: 'action.selected',
-                    color: 'primary.main',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: { xs: 'space-between', md: 'flex-end' },
+                    width: { xs: '100%', md: 'auto' },
+                    gap: 1.25,
+                    pt: { xs: 1, md: 0 },
+                    borderTop: { xs: '1px solid', md: 'none' },
+                    borderColor: 'divider',
                   }}
                 >
-                  <KeyIcon sx={{ fontSize: 20 }} />
-                </Box>
-                <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                    {key.name}
+                  <Typography variant="caption" color="text.disabled" sx={{ fontSize: { xs: '0.72rem', sm: '0.78rem' } }}>
+                    Created {formatDate(key.createdAt)}
                   </Typography>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ fontFamily: 'JetBrains Mono, monospace' }}
-                  >
-                    {key.keyPreview}
-                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <AppTooltip title={copiedId === key.id ? 'Copied' : 'Copy Key'}>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleCopy(key.id, key.keyPreview)}
+                        sx={{
+                          color: copiedId === key.id ? 'success.main' : 'text.secondary',
+                          p: 0.75,
+                          '&:hover': { color: 'text.primary', bgcolor: 'action.hover' },
+                        }}
+                      >
+                        {copiedId === key.id ? <CheckIcon fontSize="small" /> : <CopyIcon fontSize="small" />}
+                      </IconButton>
+                    </AppTooltip>
+                    <AppTooltip title="Revoke Key">
+                      <IconButton
+                        size="small"
+                        onClick={() => onDeleteKey(key.id)}
+                        sx={{
+                          color: 'text.disabled',
+                          p: 0.75,
+                          '&:hover': { color: 'error.main', bgcolor: 'rgba(239, 68, 68, 0.08)' },
+                        }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </AppTooltip>
+                  </Box>
                 </Box>
-              </Box>
-
-              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
-                <Typography variant="caption" color="text.disabled">
-                  Created {formatDate(key.createdAt)}
-                </Typography>
-                <AppTooltip title={copiedId === key.id ? 'Copied' : 'Copy Key'}>
-                  <IconButton
-                    size="small"
-                    onClick={() => handleCopy(key.id, key.keyPreview)}
-                    sx={{ color: copiedId === key.id ? 'success.main' : 'text.secondary' }}
-                  >
-                    {copiedId === key.id ? <CheckIcon fontSize="small" /> : <CopyIcon fontSize="small" />}
-                  </IconButton>
-                </AppTooltip>
-                <AppTooltip title="Revoke Key">
-                  <IconButton
-                    size="small"
-                    onClick={() => onDeleteKey(key.id)}
-                    sx={{ color: 'text.disabled', '&:hover': { color: 'error.main' } }}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </AppTooltip>
-              </Box>
-            </ListItem>
-          ))}
-        </List>
+              </ListItem>
+            ))}
+          </List>
+        )}
 
         {/* Create Key Dialog */}
         <Dialog open={openModal} onClose={() => setOpenModal(false)} fullWidth maxWidth="xs">

@@ -157,7 +157,7 @@ export const LoginForm: React.FC = () => {
               <FormControlLabel
                 control={<Checkbox {...field} checked={field.value} size="small" sx={{ p: 0.5 }} />}
                 label="Remember me"
-                slotProps={{ typography: { variant: 'body2', color: 'text.secondary', fontSize: { xs: '0.8rem', sm: '0.84rem' } } }}
+                slotProps={{ typography: { variant: 'body2', color: 'text.secondary', sx: { fontSize: { xs: '0.8rem', sm: '0.84rem' } } } }}
                 sx={{ m: 0 }}
               />
             )}

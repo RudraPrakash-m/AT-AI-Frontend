@@ -9,7 +9,7 @@ import {
 import {
   PersonOutlined as AccountIcon,
   DataUsage as UsageIcon,
-  Key as KeyIcon,
+  CloudQueue as CloudTunnelIcon,
 } from '@mui/icons-material';
 import { PageContainer } from '@/components/common/layout/PageContainer';
 import { ScrollContainer } from '@/components/common/layout/ScrollContainer';
@@ -17,18 +17,15 @@ import { ResponsiveContainer } from '@/components/common/layout/ResponsiveContai
 import { useProfile } from '../hooks/useProfile';
 import { ProfileDetails } from '../components/ProfileDetails';
 import { UsageStatistics } from '../components/UsageStatistics';
-import { ApiKeyManager } from '../components/ApiKeyManager';
+import { OllamaConfigManager } from '../components/OllamaConfigManager';
 
 export const ProfilePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0);
   const {
     profile,
-    apiKeys,
     usageMetrics,
     isLoading,
     updateProfile,
-    createApiKey,
-    deleteApiKey,
   } = useProfile();
 
   if (isLoading || !profile) {
@@ -51,7 +48,7 @@ export const ProfilePage: React.FC = () => {
               Account & Subscription
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              Manage personal credentials, developer keys, and multi-tier usage limits.
+              Manage personal credentials, Cloudflare Tunnel / Ollama AI endpoints, and usage limits.
             </Typography>
           </Box>
 
@@ -73,7 +70,7 @@ export const ProfilePage: React.FC = () => {
           >
             <Tab icon={<AccountIcon sx={{ fontSize: 18 }} />} iconPosition="start" label="Profile" />
             <Tab icon={<UsageIcon sx={{ fontSize: 18 }} />} iconPosition="start" label="Usage & Quota" />
-            <Tab icon={<KeyIcon sx={{ fontSize: 18 }} />} iconPosition="start" label="API Keys" />
+            <Tab icon={<CloudTunnelIcon sx={{ fontSize: 18 }} />} iconPosition="start" label="Cloudflare / Ollama URL" />
           </Tabs>
 
           {activeTab === 0 && (
@@ -85,11 +82,7 @@ export const ProfilePage: React.FC = () => {
           )}
 
           {activeTab === 2 && (
-            <ApiKeyManager
-              apiKeys={apiKeys}
-              onCreateKey={createApiKey}
-              onDeleteKey={deleteApiKey}
-            />
+            <OllamaConfigManager />
           )}
         </ResponsiveContainer>
       </ScrollContainer>

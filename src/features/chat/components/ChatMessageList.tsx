@@ -26,7 +26,7 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = ({
   streamingThinking = '',
   activeModelName = 'AT AI 4.5',
   userName = 'Rudra',
-  onSelectPrompt,
+  onSelectPrompt: _onSelectPrompt,
   onEditMessage,
   onRegenerate,
   onLikeToggle,

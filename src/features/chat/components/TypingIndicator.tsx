@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import aashditLogo from '@/assets/aashditLogo-removebg-preview.png';
 
 interface TypingIndicatorProps {
@@ -9,8 +9,6 @@ interface TypingIndicatorProps {
 export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
   statusText = 'AT AI is generating response...',
 }) => {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1.5, py: 1, px: 0.5 }}>

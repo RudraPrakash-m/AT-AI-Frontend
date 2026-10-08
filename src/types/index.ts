@@ -16,6 +16,10 @@ export interface User {
   plan: 'Free' | 'Pro' | 'Enterprise';
   tokensUsed: number;
   tokenLimit: number;
+  jobTitle?: string;
+  organization?: string;
+  bio?: string;
+  ollamaBaseUrl?: string;
   createdAt: string;
 }
 

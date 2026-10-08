@@ -14,7 +14,6 @@ import {
   KeyboardArrowDown as ArrowDownIcon,
   AutoAwesome as SparklesIcon,
   Check as CheckIcon,
-  Bolt as FlashIcon,
   VisibilityOutlined as VisionIcon,
   PsychologyOutlined as ReasoningIcon,
 } from '@mui/icons-material';

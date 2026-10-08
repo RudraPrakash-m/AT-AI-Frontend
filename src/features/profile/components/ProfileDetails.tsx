@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -23,28 +23,44 @@ interface ProfileDetailsProps {
 
 export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile, onUpdate }) => {
   const [toastOpen, setToastOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors, isDirty },
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: profile.name,
-      email: profile.email,
+      name: profile.name || '',
+      email: profile.email || '',
       jobTitle: profile.jobTitle || '',
       organization: profile.organization || '',
       bio: profile.bio || '',
     },
   });
 
+  useEffect(() => {
+    reset({
+      name: profile.name || '',
+      email: profile.email || '',
+      jobTitle: profile.jobTitle || '',
+      organization: profile.organization || '',
+      bio: profile.bio || '',
+    });
+  }, [profile, reset]);
+
   const onSubmit = async (data: ProfileFormData) => {
     try {
       setIsSubmitting(true);
+      setErrorMessage(null);
       await onUpdate(data);
+      reset(data);
       setToastOpen(true);
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Failed to update profile. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -165,6 +181,17 @@ export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile, onUpdat
         >
           <Alert severity="success" sx={{ borderRadius: '10px' }}>
             Profile updated successfully!
+          </Alert>
+        </Snackbar>
+
+        <Snackbar
+          open={Boolean(errorMessage)}
+          autoHideDuration={4000}
+          onClose={() => setErrorMessage(null)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert severity="error" sx={{ borderRadius: '10px' }}>
+            {errorMessage}
           </Alert>
         </Snackbar>
       </CardContent>

@@ -20,7 +20,6 @@ import {
   Paper,
 } from '@mui/material';
 import {
-  AutoAwesome as SparklesIcon,
   ExpandMore as ExpandMoreIcon,
   Psychology as ThinkingIcon,
   Language as WebIcon,

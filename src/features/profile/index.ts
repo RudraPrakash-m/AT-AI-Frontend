@@ -5,4 +5,5 @@ export * from './hooks/useProfile';
 export * from './components/ProfileDetails';
 export * from './components/UsageStatistics';
 export * from './components/ApiKeyManager';
+export * from './components/OllamaConfigManager';
 export * from './pages/ProfilePage';

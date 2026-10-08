@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { UserProfile, ApiKeyItem, UsageMetric } from '../types/profile.types';
 import { profileService } from '../services/profile.service';
+import { useAuth } from '@/features/authentication/hooks/useAuth';
 
 export const useProfile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [apiKeys, setApiKeys] = useState<ApiKeyItem[]>([]);
   const [usageMetrics, setUsageMetrics] = useState<UsageMetric[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { updateUser } = useAuth();
 
   const loadProfile = useCallback(async () => {
     try {
@@ -30,8 +32,9 @@ export const useProfile = () => {
   const updateProfile = useCallback(async (data: Partial<UserProfile>) => {
     const updated = await profileService.updateProfile(data);
     setProfile(updated);
+    updateUser(updated);
     return updated;
-  }, []);
+  }, [updateUser]);
 
   const createApiKey = useCallback(async (name: string) => {
     const newKey = await profileService.createApiKey(name);
