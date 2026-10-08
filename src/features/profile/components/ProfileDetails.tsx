@@ -70,20 +70,20 @@ export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile, onUpdat
     <Card
       elevation={0}
       sx={{
-        borderRadius: '16px',
+        borderRadius: { xs: '14px', sm: '16px' },
         border: '1px solid',
-        borderColor: 'divider',
-        bgcolor: 'background.paper',
+        borderColor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(0, 163, 255, 0.16)' : 'rgba(2, 132, 199, 0.14)'),
+        bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#0C1424' : '#FFFFFF'),
       }}
     >
-      <CardContent sx={{ p: 3 }}>
-        <Stack direction="row" spacing={3} sx={{ alignItems: 'center', mb: 3 }}>
-          <AppAvatar name={profile.name} size={64} />
+      <CardContent sx={{ p: { xs: 2, sm: 2.75, md: 3 } }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1.5, sm: 2.5 }} sx={{ alignItems: { xs: 'flex-start', sm: 'center' }, mb: 3 }}>
+          <AppAvatar name={profile.name} size={56} sx={{ width: { xs: 48, sm: 56 }, height: { xs: 48, sm: 56 } }} />
           <Box>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, fontSize: { xs: '1.05rem', sm: '1.2rem' } }}>
               {profile.name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
               {profile.email} • {profile.plan} Plan Member
             </Typography>
           </Box>

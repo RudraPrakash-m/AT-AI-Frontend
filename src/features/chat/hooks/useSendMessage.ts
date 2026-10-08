@@ -37,7 +37,30 @@ export const useSendMessage = ({
 
       try {
         let currentConvId = payload.conversationId;
+        const tempId = generateId('msg_u_opt');
 
+        // Optimistic User Message immediately constructed
+        const userMessage: ChatMessageEntity = {
+          id: tempId,
+          conversationId: currentConvId || 'temp_conv',
+          role: 'user',
+          content: payload.content,
+          attachments: payload.attachments,
+          status: 'complete',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        // Render user message instantly (<2ms)
+        if (onMessageAdded) {
+          onMessageAdded(userMessage);
+        }
+
+        setIsStreaming(true);
+        setStreamingText('');
+        setStreamingThinking('');
+
+        // If starting a new conversation, create conversation record and link
         if (!currentConvId) {
           const selectedModel =
             AVAILABLE_MODELS.find((m) => m.id === payload.modelId) || AVAILABLE_MODELS[0];
@@ -55,30 +78,14 @@ export const useSendMessage = ({
             messageCount: 2,
           });
           currentConvId = newConv.id;
+          userMessage.conversationId = currentConvId;
+
           if (onConversationCreated) {
             onConversationCreated(currentConvId);
           }
         }
 
-        const userMessage: ChatMessageEntity = {
-          id: generateId('msg_u'),
-          conversationId: currentConvId,
-          role: 'user',
-          content: payload.content,
-          attachments: payload.attachments,
-          status: 'complete',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-
         await chatService.saveMessage(userMessage);
-        if (onMessageAdded) {
-          onMessageAdded(userMessage);
-        }
-
-        setIsStreaming(true);
-        setStreamingText('');
-        setStreamingThinking('');
 
         const cancelFn = await chatService.streamAssistantResponse(
           {

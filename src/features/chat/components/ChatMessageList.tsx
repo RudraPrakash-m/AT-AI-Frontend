@@ -35,6 +35,21 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = ({
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
+  // Virtualization threshold (conversations over 24 messages use dynamic windowing)
+  const isLongConversation = messages.length > 24;
+  const [visibleStartIndex, setVisibleStartIndex] = React.useState<number>(0);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  // For long conversations, keep last 30 messages in the primary active window during bottom scroll
+  React.useEffect(() => {
+    if (isLongConversation) {
+      const targetStart = Math.max(0, messages.length - 28);
+      setVisibleStartIndex(targetStart);
+    } else {
+      setVisibleStartIndex(0);
+    }
+  }, [messages.length, isLongConversation]);
+
   if (messages.length === 0 && !isStreaming) {
     return (
       <Box
@@ -97,8 +112,18 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = ({
     );
   }
 
+  // Calculate visible slice for high-performance rendering
+  const visibleMessages = isLongConversation
+    ? messages.slice(visibleStartIndex)
+    : messages;
+
+  const topEstimatedSpacerHeight = isLongConversation
+    ? visibleStartIndex * 110 // Average approximated height of hidden messages
+    : 0;
+
   return (
     <Box
+      ref={containerRef}
       sx={{
         width: '100%',
         maxWidth: 840,
@@ -111,8 +136,25 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = ({
         position: 'relative',
       }}
     >
+      {/* Top virtualization spacer for long message threads */}
+      {topEstimatedSpacerHeight > 0 && (
+        <Box
+          sx={{
+            height: topEstimatedSpacerHeight,
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic', my: 1 }}>
+            {visibleStartIndex} earlier message{visibleStartIndex === 1 ? '' : 's'} above
+          </Typography>
+        </Box>
+      )}
+
       <Stack spacing={{ xs: 1.5, sm: 2 }} sx={{ width: '100%' }}>
-        {messages.map((msg) => (
+        {visibleMessages.map((msg) => (
           <ChatMessage
             key={msg.id}
             message={msg}

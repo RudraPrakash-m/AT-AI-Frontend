@@ -7,8 +7,11 @@ import type {
   RenameChatPayload,
 } from '../types/historyChat.types';
 
-// In-memory runtime session fallback
-let sessionConversations: ChatHistoryItemType[] = [];
+// In-memory runtime session fallback + persistent cache
+let sessionConversations: ChatHistoryItemType[] = storage.get<ChatHistoryItemType[]>(
+  STORAGE_KEYS.CONVERSATIONS,
+  []
+);
 
 const normalizeConversation = (c: any): ChatHistoryItemType => ({
   id: c.id || c._id || `conv_${Date.now()}`,
@@ -24,6 +27,21 @@ const normalizeConversation = (c: any): ChatHistoryItemType => ({
 });
 
 class HistoryChatService {
+  getCachedConversations(): ChatHistoryItemType[] {
+    if (!sessionConversations || sessionConversations.length === 0) {
+      sessionConversations = storage.get<ChatHistoryItemType[]>(STORAGE_KEYS.CONVERSATIONS, []);
+    }
+    return sessionConversations;
+  }
+
+  private saveToCache(list: ChatHistoryItemType[]) {
+    sessionConversations = list;
+    storage.set(STORAGE_KEYS.CONVERSATIONS, list);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('chat:history:updated'));
+    }
+  }
+
   private getHeaders(): HeadersInit {
     const token = storage.get<string | null>(STORAGE_KEYS.AUTH_TOKEN, null);
     return {
@@ -46,7 +64,7 @@ class HistoryChatService {
           const rawData = await res.json();
           if (Array.isArray(rawData)) {
             const data: ChatHistoryItemType[] = rawData.map(normalizeConversation);
-            sessionConversations = data;
+            this.saveToCache(data);
             let list = [...data];
 
             if (filters?.searchQuery?.trim()) {
@@ -123,7 +141,7 @@ class HistoryChatService {
         if (res.ok) {
           const rawCreated = await res.json();
           const created = normalizeConversation(rawCreated);
-          sessionConversations = [created, ...sessionConversations.filter((c) => c.id !== created.id)];
+          this.saveToCache([created, ...sessionConversations.filter((c) => c.id !== created.id)]);
           return created;
         }
       } catch (err) {
@@ -144,7 +162,7 @@ class HistoryChatService {
       tags: data.tags || [],
     };
 
-    sessionConversations = [newConv, ...sessionConversations];
+    this.saveToCache([newConv, ...sessionConversations]);
     return newConv;
   }
 
@@ -159,9 +177,10 @@ class HistoryChatService {
         if (res.ok) {
           const rawUpdated = await res.json();
           const updated = normalizeConversation(rawUpdated);
-          sessionConversations = sessionConversations.map((c) =>
+          const updatedList = sessionConversations.map((c) =>
             c.id === payload.conversationId ? updated : c
           );
+          this.saveToCache(updatedList);
           return updated;
         }
       } catch (err) {
@@ -171,12 +190,15 @@ class HistoryChatService {
 
     const index = sessionConversations.findIndex((c) => c.id === payload.conversationId);
     if (index === -1) throw new Error('Conversation not found');
-    sessionConversations[index] = {
+    const updatedConv = {
       ...sessionConversations[index],
       title: payload.newTitle,
       updatedAt: new Date().toISOString(),
     };
-    return sessionConversations[index];
+    const updatedList = [...sessionConversations];
+    updatedList[index] = updatedConv;
+    this.saveToCache(updatedList);
+    return updatedConv;
   }
 
   async togglePin(conversationId: string): Promise<ChatHistoryItemType> {
@@ -193,9 +215,10 @@ class HistoryChatService {
         if (res.ok) {
           const rawUpdated = await res.json();
           const updated = normalizeConversation(rawUpdated);
-          sessionConversations = sessionConversations.map((c) =>
+          const updatedList = sessionConversations.map((c) =>
             c.id === conversationId ? updated : c
           );
+          this.saveToCache(updatedList);
           return updated;
         }
       } catch (err) {
@@ -205,12 +228,15 @@ class HistoryChatService {
 
     const index = sessionConversations.findIndex((c) => c.id === conversationId);
     if (index === -1) throw new Error('Conversation not found');
-    sessionConversations[index] = {
+    const updatedConv = {
       ...sessionConversations[index],
       isPinned: nextPinned,
       updatedAt: new Date().toISOString(),
     };
-    return sessionConversations[index];
+    const updatedList = [...sessionConversations];
+    updatedList[index] = updatedConv;
+    this.saveToCache(updatedList);
+    return updatedConv;
   }
 
   async deleteConversation(conversationId: string): Promise<boolean> {
@@ -225,7 +251,7 @@ class HistoryChatService {
       }
     }
 
-    sessionConversations = sessionConversations.filter((c) => c.id !== conversationId);
+    this.saveToCache(sessionConversations.filter((c) => c.id !== conversationId));
     return true;
   }
 
@@ -241,7 +267,7 @@ class HistoryChatService {
       }
     }
 
-    sessionConversations = [];
+    this.saveToCache([]);
     return true;
   }
 }

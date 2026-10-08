@@ -37,62 +37,87 @@ export const UsageStatistics: React.FC<UsageStatisticsProps> = ({ profile, metri
     <Card
       elevation={0}
       sx={{
-        borderRadius: '16px',
+        borderRadius: { xs: '14px', sm: '16px' },
         border: '1px solid',
-        borderColor: 'divider',
-        bgcolor: 'background.paper',
+        borderColor: isDark ? 'rgba(0, 163, 255, 0.16)' : 'rgba(2, 132, 199, 0.14)',
+        bgcolor: isDark ? '#0C1424' : '#FFFFFF',
       }}
     >
-      <CardContent sx={{ p: 3 }}>
-        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>
+      <CardContent sx={{ p: { xs: 2, sm: 2.75, md: 3 } }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            justifyContent: 'space-between',
+            gap: 1.5,
+            mb: 1.5,
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 700, fontSize: { xs: '1.05rem', sm: '1.2rem' } }}>
             Usage & Quotas
           </Typography>
           <Chip
-            icon={<PlanIcon sx={{ fontSize: '16px !important' }} />}
+            icon={<PlanIcon sx={{ fontSize: '15px !important', color: '#FFFFFF !important' }} />}
             label={`${profile.plan} Plan Active`}
-            color="primary"
             size="small"
-            sx={{ fontWeight: 600 }}
+            sx={{
+              fontWeight: 700,
+              fontSize: '0.74rem',
+              background: 'linear-gradient(135deg, #00A3FF 0%, #0284C7 100%)',
+              color: '#FFFFFF',
+              borderRadius: '8px',
+              boxShadow: '0 2px 8px rgba(0, 163, 255, 0.3)',
+              alignSelf: { xs: 'flex-start', sm: 'auto' },
+            }}
           />
-        </Stack>
+        </Box>
 
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
           Track real-time token utilization and query metrics across your enterprise workspace.
         </Typography>
 
         {/* Token Progress Bar */}
         <Box
           sx={{
-            p: 2.5,
+            p: { xs: 1.75, sm: 2.5 },
             borderRadius: '12px',
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+            bgcolor: isDark ? 'rgba(0, 163, 255, 0.05)' : 'rgba(2, 132, 199, 0.03)',
             border: '1px solid',
-            borderColor: 'divider',
-            mb: 3,
+            borderColor: isDark ? 'rgba(0, 163, 255, 0.14)' : 'rgba(2, 132, 199, 0.12)',
+            mb: 2.5,
           }}
         >
-          <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              justifyContent: 'space-between',
+              alignItems: { xs: 'flex-start', sm: 'center' },
+              gap: 0.5,
+              mb: 1.25,
+            }}
+          >
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-              <TokenIcon sx={{ color: 'primary.main', fontSize: 20 }} />
-              <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+              <TokenIcon sx={{ color: 'primary.main', fontSize: 18 }} />
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: { xs: '0.85rem', sm: '0.9rem' } }}>
                 Monthly Token Quota
               </Typography>
             </Stack>
-            <Typography variant="body2" sx={{ fontWeight: 700, color: 'primary.main' }}>
+            <Typography variant="body2" sx={{ fontWeight: 700, color: 'primary.main', fontSize: { xs: '0.82rem', sm: '0.88rem' } }}>
               {used.toLocaleString()} / {limit.toLocaleString()} ({percentUsed}%)
             </Typography>
-          </Stack>
+          </Box>
 
           <LinearProgress
             variant="determinate"
             value={percentUsed}
             sx={{
-              height: 10,
-              borderRadius: 5,
-              bgcolor: 'divider',
+              height: 8,
+              borderRadius: 4,
+              bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
               '& .MuiLinearProgress-bar': {
-                borderRadius: 5,
+                borderRadius: 4,
                 background: 'linear-gradient(90deg, #00A3FF 0%, #F59E0B 100%)',
               },
             }}

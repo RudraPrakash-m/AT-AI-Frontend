@@ -222,6 +222,7 @@ class ChatService {
         const reader = response.body.getReader();
         const decoder = new TextDecoder('utf-8');
         let buffer = '';
+        let fullAccumulated = '';
 
         while (true) {
           if (isCancelled) break;
@@ -240,13 +241,31 @@ class ChatService {
             try {
               const parsed = JSON.parse(jsonStr);
               if (parsed.error) {
-                accumulatedText = parsed.error;
-                onChunk(accumulatedText);
+                fullAccumulated = parsed.error;
+                onChunk(fullAccumulated);
                 break;
               }
               if (parsed.token) {
-                accumulatedText += parsed.token;
-                onChunk(accumulatedText);
+                fullAccumulated += parsed.token;
+
+                // Check for <think>...</think> reasoning blocks (e.g. DeepSeek / Qwen)
+                if (fullAccumulated.includes('<think>')) {
+                  const thinkStart = fullAccumulated.indexOf('<think>') + 7;
+                  const thinkEnd = fullAccumulated.indexOf('</think>');
+
+                  if (thinkEnd !== -1) {
+                    const thinkingPart = fullAccumulated.slice(thinkStart, thinkEnd).trim();
+                    const textPart = fullAccumulated.slice(thinkEnd + 8).trimStart();
+                    accumulatedText = textPart;
+                    onChunk(textPart, thinkingPart);
+                  } else {
+                    const thinkingPart = fullAccumulated.slice(thinkStart).trim();
+                    onChunk('', thinkingPart);
+                  }
+                } else {
+                  accumulatedText = fullAccumulated;
+                  onChunk(fullAccumulated);
+                }
               }
             } catch {
               // ignore partial chunk json parse errors
@@ -256,13 +275,30 @@ class ChatService {
 
         if (isCancelled) return;
 
+        // Final cleanup of thinking tags if any remained unclosed
+        let finalContent = accumulatedText;
+        let finalThinking: string | undefined;
+
+        if (fullAccumulated.includes('<think>')) {
+          const thinkStart = fullAccumulated.indexOf('<think>') + 7;
+          const thinkEnd = fullAccumulated.indexOf('</think>');
+          if (thinkEnd !== -1) {
+            finalThinking = fullAccumulated.slice(thinkStart, thinkEnd).trim();
+            finalContent = fullAccumulated.slice(thinkEnd + 8).trimStart();
+          } else {
+            finalThinking = fullAccumulated.slice(thinkStart).trim();
+            finalContent = '';
+          }
+        }
+
         const finalMessage: ChatMessageEntity = {
           id: generateId('msg'),
           conversationId,
           role: 'assistant',
           modelId: targetModel.id,
           modelName,
-          content: accumulatedText || 'No response received from model.',
+          content: finalContent || (finalThinking ? 'Analysis completed.' : 'No response received from model.'),
+          thinking: finalThinking,
           status: 'complete',
           webSearchUsed: Boolean(payload.useWebSearch),
           createdAt: new Date().toISOString(),
