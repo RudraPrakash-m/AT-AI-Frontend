@@ -129,22 +129,25 @@ export const ChatHistoryItem: React.FC<ChatHistoryItemProps> = ({
           borderRadius: '8px',
           bgcolor: isActive
             ? theme.palette.mode === 'dark'
-              ? 'rgba(255, 255, 255, 0.09)'
-              : 'rgba(0, 0, 0, 0.06)'
+              ? 'rgba(0, 163, 255, 0.14)'
+              : 'rgba(2, 132, 199, 0.1)'
             : 'transparent',
+          borderLeft: isActive
+            ? `3px solid ${theme.palette.mode === 'dark' ? '#00A3FF' : '#0284C7'}`
+            : '3px solid transparent',
           '&:hover': {
             bgcolor: isActive
               ? theme.palette.mode === 'dark'
-                ? 'rgba(255, 255, 255, 0.12)'
-                : 'rgba(0, 0, 0, 0.08)'
+                ? 'rgba(0, 163, 255, 0.18)'
+                : 'rgba(2, 132, 199, 0.14)'
               : theme.palette.mode === 'dark'
-                ? 'rgba(255, 255, 255, 0.05)'
-                : 'rgba(0, 0, 0, 0.04)',
+                ? 'rgba(0, 163, 255, 0.06)'
+                : 'rgba(2, 132, 199, 0.05)',
           },
           '&.Mui-selected': {
             bgcolor: theme.palette.mode === 'dark'
-              ? 'rgba(255, 255, 255, 0.09)'
-              : 'rgba(0, 0, 0, 0.06)',
+              ? 'rgba(0, 163, 255, 0.14)'
+              : 'rgba(2, 132, 199, 0.1)',
           },
         }}
       >

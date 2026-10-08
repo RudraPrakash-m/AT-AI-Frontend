@@ -8,7 +8,8 @@ export const RegisterPage: React.FC = () => {
   return (
     <AuthCard
       title="Create Account"
-      subtitle="Start creating with next-generation AI models"
+      subtitle="Join AT AI workspace"
+      backTo="/login"
       footer={
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">

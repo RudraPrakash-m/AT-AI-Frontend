@@ -70,10 +70,10 @@ export const LoginForm: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Stack spacing={2.5}>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate style={{ width: '100%' }}>
+      <Stack spacing={{ xs: 1.5, sm: 1.75 }}>
         {errorMessage && (
-          <Alert severity="error" sx={{ borderRadius: '10px' }}>
+          <Alert severity="error" sx={{ borderRadius: '10px', py: 0.5 }}>
             {errorMessage}
           </Alert>
         )}
@@ -140,15 +140,25 @@ export const LoginForm: React.FC = () => {
           )}
         />
 
-        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 0.5,
+            pt: 0,
+          }}
+        >
           <Controller
             name="rememberMe"
             control={control}
             render={({ field }) => (
               <FormControlLabel
-                control={<Checkbox {...field} checked={field.value} size="small" />}
+                control={<Checkbox {...field} checked={field.value} size="small" sx={{ p: 0.5 }} />}
                 label="Remember me"
-                slotProps={{ typography: { variant: 'body2', color: 'text.secondary' } }}
+                slotProps={{ typography: { variant: 'body2', color: 'text.secondary', fontSize: { xs: '0.8rem', sm: '0.84rem' } } }}
+                sx={{ m: 0 }}
               />
             )}
           />
@@ -158,7 +168,7 @@ export const LoginForm: React.FC = () => {
             variant="body2"
             color="primary"
             underline="hover"
-            sx={{ fontWeight: 500 }}
+            sx={{ fontWeight: 500, fontSize: { xs: '0.8rem', sm: '0.84rem' } }}
           >
             Forgot password?
           </Link>
@@ -167,9 +177,14 @@ export const LoginForm: React.FC = () => {
         <AppButton
           type="submit"
           variant="contained"
-          size="large"
+          size="medium"
           fullWidth
           loading={isSubmitting}
+          sx={{
+            py: 1.1,
+            fontSize: { xs: '0.88rem', sm: '0.92rem' },
+            fontWeight: 700,
+          }}
         >
           Sign In to Workspace
         </AppButton>

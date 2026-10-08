@@ -93,7 +93,7 @@ export const UsageStatistics: React.FC<UsageStatisticsProps> = ({ profile, metri
               bgcolor: 'divider',
               '& .MuiLinearProgress-bar': {
                 borderRadius: 5,
-                background: 'linear-gradient(90deg, #2563EB 0%, #7C3AED 100%)',
+                background: 'linear-gradient(90deg, #00A3FF 0%, #F59E0B 100%)',
               },
             }}
           />

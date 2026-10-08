@@ -17,6 +17,13 @@ export const ScrollContainer = forwardRef<HTMLDivElement, ScrollContainerProps>(
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+            width: 0,
+            height: 0,
+          },
           ...sx,
         }}
         {...props}

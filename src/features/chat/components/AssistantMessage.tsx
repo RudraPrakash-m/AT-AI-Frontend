@@ -30,6 +30,7 @@ import { formatTime } from '@/utils/date.utils';
 import type { ChatMessageEntity } from '../types/chat.types';
 import { CodeBlock } from './CodeBlock';
 import { MessageActions } from './MessageActions';
+import aashditLogo from '@/assets/aashditLogo-removebg-preview.png';
 
 interface AssistantMessageProps {
   message: ChatMessageEntity;
@@ -54,39 +55,46 @@ export const AssistantMessage: React.FC<AssistantMessageProps> = ({
         width: '100%',
         display: 'flex',
         justifyContent: 'flex-start',
-        py: 2,
+        py: { xs: 1.5, sm: 2 },
       }}
     >
-      <Stack direction="row" spacing={2} sx={{ width: '100%', maxWidth: { xs: '100%', md: '88%' } }}>
+      <Stack direction="row" spacing={{ xs: 1, sm: 1.75 }} sx={{ width: '100%', maxWidth: { xs: '100%', md: '92%' } }}>
         <AppAvatar
-          size={34}
-          status="ai"
+          size={32}
+          src={aashditLogo}
+          alt="Aashdit AI"
           sx={{
-            background: 'linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)',
-            boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
+            width: { xs: 28, sm: 34 },
+            height: { xs: 28, sm: 34 },
+            bgcolor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
+            border: '1px solid',
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
+            p: 0.5,
+            flexShrink: 0,
+            '& img': {
+              objectFit: 'contain',
+            },
           }}
-        >
-          <SparklesIcon sx={{ fontSize: 18, color: '#FFFFFF' }} />
-        </AppAvatar>
+        />
 
         <Box sx={{ flex: 1, minWidth: 0 }}>
           {/* Header row: Model tag & features */}
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1, flexWrap: 'wrap' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'text.primary' }}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 0.75, flexWrap: 'wrap', gap: 0.5 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'text.primary', fontSize: { xs: '0.82rem', sm: '0.875rem' } }}>
               {message.modelName || 'AT AI Assistant'}
             </Typography>
 
             {message.webSearchUsed && (
               <Chip
-                icon={<WebIcon sx={{ fontSize: '13px !important' }} />}
+                icon={<WebIcon sx={{ fontSize: '12px !important' }} />}
                 label="Web Verified"
                 size="small"
                 variant="outlined"
-                sx={{ height: 20, fontSize: '0.68rem' }}
+                sx={{ height: 18, fontSize: '0.62rem' }}
               />
             )}
 
-            <Typography variant="caption" color="text.disabled" sx={{ fontSize: '0.7rem' }}>
+            <Typography variant="caption" color="text.disabled" sx={{ fontSize: '0.68rem' }}>
               {formatTime(message.createdAt)}
             </Typography>
           </Stack>
@@ -99,7 +107,7 @@ export const AssistantMessage: React.FC<AssistantMessageProps> = ({
               disableGutters
               elevation={0}
               sx={{
-                mb: 2,
+                mb: 1.5,
                 borderRadius: '10px !important',
                 border: '1px solid',
                 borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
@@ -110,25 +118,25 @@ export const AssistantMessage: React.FC<AssistantMessageProps> = ({
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon sx={{ fontSize: 16 }} />}
                 sx={{
-                  minHeight: 36,
-                  px: 1.5,
+                  minHeight: 34,
+                  px: 1.25,
                   py: 0.5,
-                  '& .MuiAccordionSummary-content': { my: 0.5, alignItems: 'center', gap: 1 },
+                  '& .MuiAccordionSummary-content': { my: 0.25, alignItems: 'center', gap: 1 },
                 }}
               >
-                <ThinkingIcon sx={{ fontSize: 16, color: 'primary.main' }} />
-                <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                <ThinkingIcon sx={{ fontSize: 15, color: 'primary.main' }} />
+                <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', fontSize: { xs: '0.72rem', sm: '0.75rem' } }}>
                   Reasoning Process & Step-by-Step Analysis
                 </Typography>
               </AccordionSummary>
-              <AccordionDetails sx={{ px: 1.5, pt: 0, pb: 1.5 }}>
+              <AccordionDetails sx={{ px: 1.25, pt: 0, pb: 1.25 }}>
                 <Typography
                   variant="caption"
                   color="text.secondary"
                   sx={{
                     whiteSpace: 'pre-wrap',
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.75rem',
+                    fontSize: { xs: '0.7rem', sm: '0.75rem' },
                     display: 'block',
                     lineHeight: 1.5,
                   }}
@@ -143,35 +151,38 @@ export const AssistantMessage: React.FC<AssistantMessageProps> = ({
           <Box
             sx={{
               color: 'text.primary',
-              fontSize: '0.94rem',
-              lineHeight: 1.7,
+              fontSize: { xs: '0.88rem', sm: '0.94rem' },
+              lineHeight: { xs: 1.6, sm: 1.7 },
               wordBreak: 'break-word',
+              overflowWrap: 'anywhere',
               '& h1, & h2, & h3, & h4': {
                 fontFamily: 'Plus Jakarta Sans, Inter, sans-serif',
                 fontWeight: 700,
-                mt: 2,
-                mb: 1,
+                mt: 1.75,
+                mb: 0.75,
                 color: 'text.primary',
               },
-              '& h3': { fontSize: '1.15rem' },
-              '& h4': { fontSize: '1rem' },
-              '& p': { my: 1 },
-              '& ul, & ol': { pl: 3, my: 1 },
-              '& li': { my: 0.5 },
+              '& h1': { fontSize: { xs: '1.25rem', sm: '1.45rem' } },
+              '& h2': { fontSize: { xs: '1.15rem', sm: '1.3rem' } },
+              '& h3': { fontSize: { xs: '1.05rem', sm: '1.15rem' } },
+              '& h4': { fontSize: { xs: '0.95rem', sm: '1rem' } },
+              '& p': { my: 0.75 },
+              '& ul, & ol': { pl: { xs: 2.5, sm: 3 }, my: 0.75 },
+              '& li': { my: 0.35 },
               '& strong': { fontWeight: 600, color: 'text.primary' },
               '& code:not(pre code)': {
                 bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
                 color: isDark ? '#93C5FD' : '#1D4ED8',
-                px: 0.75,
-                py: 0.25,
-                borderRadius: '6px',
-                fontSize: '0.86rem',
+                px: 0.6,
+                py: 0.2,
+                borderRadius: '5px',
+                fontSize: '0.84em',
                 fontFamily: 'JetBrains Mono, monospace',
               },
               '& blockquote': {
                 borderLeft: `3px solid ${theme.palette.primary.main}`,
-                pl: 2,
-                my: 1.5,
+                pl: 1.5,
+                my: 1.25,
                 color: 'text.secondary',
                 fontStyle: 'italic',
               },

@@ -73,8 +73,9 @@ export const AppAvatar: React.FC<AppAvatarProps> = ({
         width: size,
         height: size,
         fontSize: size * 0.4,
-        fontWeight: 600,
-        bgcolor: 'primary.main',
+        fontWeight: 700,
+        background: 'linear-gradient(135deg, #00A3FF 0%, #0284C7 100%)',
+        boxShadow: '0 2px 8px rgba(0, 163, 255, 0.25)',
         color: '#ffffff',
         ...sx,
       }}

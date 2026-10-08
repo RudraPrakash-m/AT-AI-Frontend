@@ -41,8 +41,8 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ language = 'typescript', c
       <Stack
         direction="row"
         sx={{
-          px: 2,
-          py: 0.75,
+          px: { xs: 1.25, sm: 2 },
+          py: { xs: 0.5, sm: 0.75 },
           alignItems: 'center',
           justifyContent: 'space-between',
           bgcolor: isDark ? '#111827' : '#0F172A',
@@ -50,8 +50,8 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ language = 'typescript', c
           borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.1)',
         }}
       >
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-          <CodeIcon sx={{ fontSize: 16, color: '#94A3B8' }} />
+        <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>
+          <CodeIcon sx={{ fontSize: { xs: 14, sm: 16 }, color: '#94A3B8' }} />
           <Typography
             variant="caption"
             sx={{
@@ -59,6 +59,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ language = 'typescript', c
               fontWeight: 600,
               fontFamily: 'JetBrains Mono, monospace',
               textTransform: 'lowercase',
+              fontSize: { xs: '0.72rem', sm: '0.75rem' },
             }}
           >
             {language}
@@ -81,15 +82,15 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ language = 'typescript', c
         >
           {copied ? (
             <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
-              <CheckIcon sx={{ fontSize: 14 }} />
-              <Typography variant="caption" sx={{ fontSize: '0.7rem', color: '#34D399' }}>
+              <CheckIcon sx={{ fontSize: { xs: 13, sm: 14 } }} />
+              <Typography variant="caption" sx={{ fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#34D399' }}>
                 Copied!
               </Typography>
             </Stack>
           ) : (
             <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
-              <CopyIcon sx={{ fontSize: 14 }} />
-              <Typography variant="caption" sx={{ fontSize: '0.7rem', color: 'inherit' }}>
+              <CopyIcon sx={{ fontSize: { xs: 13, sm: 14 } }} />
+              <Typography variant="caption" sx={{ fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: 'inherit' }}>
                 Copy
               </Typography>
             </Stack>
@@ -102,10 +103,11 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ language = 'typescript', c
         component="pre"
         sx={{
           m: 0,
-          p: 2,
+          p: { xs: 1.25, sm: 2 },
           overflowX: 'auto',
-          fontSize: '0.85rem',
-          lineHeight: 1.6,
+          WebkitOverflowScrolling: 'touch',
+          fontSize: { xs: '0.78rem', sm: '0.85rem' },
+          lineHeight: 1.55,
           color: '#E2E8F0',
           fontFamily: 'JetBrains Mono, monospace',
           '& code': {

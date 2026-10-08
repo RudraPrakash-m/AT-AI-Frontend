@@ -62,7 +62,7 @@ export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile, onUpdat
     >
       <CardContent sx={{ p: 3 }}>
         <Stack direction="row" spacing={3} sx={{ alignItems: 'center', mb: 3 }}>
-          <AppAvatar name={profile.name} size={64} status="online" />
+          <AppAvatar name={profile.name} size={64} />
           <Box>
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
               {profile.name}

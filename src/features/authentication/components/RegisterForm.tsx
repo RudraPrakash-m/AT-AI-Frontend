@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Stack,
-  FormControlLabel,
+  Box,
   Checkbox,
   Link,
   IconButton,
@@ -76,10 +76,10 @@ export const RegisterForm: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Stack spacing={2.25}>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate style={{ width: '100%' }}>
+      <Stack spacing={{ xs: 1.5, sm: 1.75 }}>
         {errorMessage && (
-          <Alert severity="error" sx={{ borderRadius: '10px' }}>
+          <Alert severity="error" sx={{ borderRadius: '10px', py: 0.5 }}>
             {errorMessage}
           </Alert>
         )}
@@ -138,7 +138,7 @@ export const RegisterForm: React.FC = () => {
             <AppInput
               {...field}
               label="Password"
-              placeholder="At least 8 chars with uppercase & number"
+              placeholder="At least 8 characters"
               type={showPassword ? 'text' : 'password'}
               fullWidth
               errorMessage={errors.password?.message}
@@ -194,39 +194,92 @@ export const RegisterForm: React.FC = () => {
           name="agreeToTerms"
           control={control}
           render={({ field }) => (
-            <Stack>
-              <FormControlLabel
-                control={<Checkbox {...field} checked={field.value} size="small" />}
-                label={
-                  <Typography variant="body2" color="text.secondary">
-                    I agree to the{' '}
-                    <Link href="#" color="primary" underline="hover">
-                      Terms of Service
-                    </Link>{' '}
-                    and{' '}
-                    <Link href="#" color="primary" underline="hover">
-                      Privacy Policy
-                    </Link>
-                  </Typography>
-                }
-              />
+            <Box sx={{ width: '100%', pt: 0.25 }}>
+              <Box
+                component="label"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 1,
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  width: '100%',
+                }}
+              >
+                <Checkbox
+                  {...field}
+                  checked={field.value}
+                  size="small"
+                  sx={{
+                    p: 0,
+                    mt: '2px',
+                    flexShrink: 0,
+                  }}
+                />
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{
+                    fontSize: { xs: '0.75rem', sm: '0.8rem' },
+                    lineHeight: 1.4,
+                    flex: 1,
+                    wordBreak: 'break-word',
+                  }}
+                >
+                  I agree to the{' '}
+                  <Link
+                    href="#"
+                    color="primary"
+                    underline="hover"
+                    onClick={(e) => e.stopPropagation()}
+                    sx={{ fontWeight: 600 }}
+                  >
+                    Terms
+                  </Link>{' '}
+                  &{' '}
+                  <Link
+                    href="#"
+                    color="primary"
+                    underline="hover"
+                    onClick={(e) => e.stopPropagation()}
+                    sx={{ fontWeight: 600 }}
+                  >
+                    Privacy Policy
+                  </Link>
+                </Typography>
+              </Box>
               {errors.agreeToTerms && (
-                <Typography variant="caption" color="error" sx={{ ml: 4 }}>
+                <Typography
+                  variant="caption"
+                  color="error"
+                  sx={{
+                    display: 'block',
+                    mt: 0.5,
+                    ml: 3,
+                    fontSize: '0.72rem',
+                    lineHeight: 1.2,
+                  }}
+                >
                   {errors.agreeToTerms.message}
                 </Typography>
               )}
-            </Stack>
+            </Box>
           )}
         />
 
         <AppButton
           type="submit"
           variant="contained"
-          size="large"
+          size="medium"
           fullWidth
           loading={isSubmitting}
+          sx={{
+            py: 1.1,
+            fontWeight: 700,
+            fontSize: { xs: '0.88rem', sm: '0.92rem' },
+          }}
         >
-          Create Free Account
+          Create Account
         </AppButton>
       </Stack>
     </form>

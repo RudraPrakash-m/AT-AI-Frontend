@@ -17,7 +17,9 @@ import {
   Psychology as ThinkIcon,
   Stop as StopIcon,
   Close as CloseIcon,
+  KeyboardArrowDown as ArrowDownIcon,
 } from '@mui/icons-material';
+import { Zoom } from '@mui/material';
 import { AppTooltip } from '@/components/common/ui/AppTooltip';
 import type { ChatAttachment } from '../types/chat.types';
 
@@ -33,6 +35,8 @@ interface ChatInputProps {
   disabled?: boolean;
   placeholder?: string;
   initialValue?: string;
+  showScrollBottom?: boolean;
+  onScrollToBottom?: () => void;
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({
@@ -40,8 +44,10 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   onStopStreaming,
   isStreaming = false,
   disabled = false,
-  placeholder = 'Ask AT AI anything... (Press Enter to send, Shift + Enter for new line)',
+  placeholder = 'Ask AT AI anything...',
   initialValue = '',
+  showScrollBottom = false,
+  onScrollToBottom,
 }) => {
   const [inputMessage, setInputMessage] = useState(initialValue);
   const [attachments, setAttachments] = useState<ChatAttachment[]>([]);
@@ -202,26 +208,77 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   return (
     <Box
       sx={{
+        position: 'relative',
         width: '100%',
-        maxWidth: 820,
+        maxWidth: 840,
         mx: 'auto',
-        px: { xs: 2, sm: 3 },
-        pb: { xs: 2, sm: 3 },
-        pt: 1,
+        px: { xs: 1.25, sm: 2.5, md: 3 },
+        pb: { xs: 1.25, sm: 2, md: 2.5 },
+        pt: 0.5,
       }}
     >
+      {/* Floating Scroll-to-Bottom Button - Perfectly Centered horizontally directly above the input box */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: { xs: -46, sm: -50 },
+          left: 0,
+          right: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          pointerEvents: 'none',
+          zIndex: 30,
+        }}
+      >
+        <Zoom in={showScrollBottom} unmountOnExit>
+          <Box sx={{ pointerEvents: 'auto' }}>
+            <AppTooltip title="Scroll to bottom">
+              <IconButton
+                onClick={onScrollToBottom}
+                size="small"
+                aria-label="Scroll to bottom"
+                sx={{
+                  width: { xs: 36, sm: 38 },
+                  height: { xs: 36, sm: 38 },
+                  borderRadius: '50%',
+                  bgcolor: isDark ? 'rgba(30, 41, 59, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+                  color: isDark ? '#F1F5F9' : '#1E293B',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid',
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.18)' : 'rgba(0, 0, 0, 0.12)',
+                  boxShadow: isDark
+                    ? '0 6px 20px rgba(0, 0, 0, 0.55)'
+                    : '0 6px 20px rgba(0, 0, 0, 0.15)',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  '&:hover': {
+                    bgcolor: isDark ? '#334155' : '#F8FAFC',
+                    transform: 'translateY(-2px)',
+                    boxShadow: isDark
+                      ? '0 8px 24px rgba(0, 0, 0, 0.65)'
+                      : '0 8px 24px rgba(0, 0, 0, 0.22)',
+                  },
+                }}
+              >
+                <ArrowDownIcon sx={{ fontSize: { xs: 19, sm: 21 } }} />
+              </IconButton>
+            </AppTooltip>
+          </Box>
+        </Zoom>
+      </Box>
+
       <Paper
         elevation={0}
         sx={{
-          p: 1.5,
-          borderRadius: '20px',
+          p: { xs: 1, sm: 1.5 },
+          borderRadius: { xs: '16px', sm: '20px' },
           bgcolor: isDark ? 'rgba(19, 27, 42, 0.85)' : 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(16px)',
           border: '1px solid',
           borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
           boxShadow: isDark
             ? '0 12px 32px -4px rgba(0, 0, 0, 0.5)'
-            : '0 12px 32px -4px rgba(37, 99, 235, 0.08)',
+            : '0 12px 32px -4px rgba(2, 132, 199, 0.08)',
           transition: 'border-color 0.15s ease',
           '&:focus-within': {
             borderColor: 'primary.main',
@@ -230,7 +287,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       >
         {/* Attachment chips / Image thumbnails */}
         {attachments.length > 0 && (
-          <Stack direction="row" spacing={1} sx={{ mb: 1.25, px: 0.5, flexWrap: 'wrap', gap: 1 }}>
+          <Stack direction="row" spacing={1} sx={{ mb: 1, px: 0.5, flexWrap: 'wrap', gap: 1 }}>
             {attachments.map((file) => (
               <Box
                 key={file.id}
@@ -251,19 +308,19 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                     component="img"
                     src={file.url}
                     alt={file.name}
-                    sx={{ width: 36, height: 36, borderRadius: '6px', objectFit: 'cover' }}
+                    sx={{ width: 34, height: 34, borderRadius: '6px', objectFit: 'cover' }}
                   />
                 ) : (
                   <Box
                     sx={{
-                      width: 32,
-                      height: 32,
+                      width: 30,
+                      height: 30,
                       borderRadius: '6px',
                       bgcolor: 'action.hover',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '0.7rem',
+                      fontSize: '0.65rem',
                       fontWeight: 700,
                     }}
                   >
@@ -271,17 +328,17 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                   </Box>
                 )}
 
-                <Box sx={{ maxWidth: 160 }}>
-                  <Typography variant="caption" noWrap sx={{ display: 'block', fontWeight: 600, fontSize: '0.75rem' }}>
+                <Box sx={{ maxWidth: { xs: 110, sm: 160 } }}>
+                  <Typography variant="caption" noWrap sx={{ display: 'block', fontWeight: 600, fontSize: '0.72rem' }}>
                     {file.name}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.65rem' }}>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.62rem' }}>
                     {(file.size / 1024).toFixed(1)} KB
                   </Typography>
                 </Box>
 
-                <IconButton size="small" onClick={() => removeAttachment(file.id)} sx={{ p: 0.25, ml: 0.5 }}>
-                  <CloseIcon sx={{ fontSize: 14 }} />
+                <IconButton size="small" onClick={() => removeAttachment(file.id)} sx={{ p: 0.25, ml: 0.25 }}>
+                  <CloseIcon sx={{ fontSize: 13 }} />
                 </IconButton>
               </Box>
             ))}
@@ -299,13 +356,17 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           onChange={(e) => setInputMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
-          placeholder={isRecording ? 'Listening to voice...' : placeholder}
+          placeholder={
+            isRecording
+              ? 'Listening to voice...'
+              : placeholder || 'Ask AT AI anything...'
+          }
           disabled={disabled || isStreaming}
           sx={{
-            px: 1,
+            px: { xs: 0.5, sm: 1 },
             py: 0.5,
-            fontSize: '0.94rem',
-            lineHeight: 1.55,
+            fontSize: { xs: '0.9rem', sm: '0.95rem' },
+            lineHeight: 1.5,
             color: 'text.primary',
             '& textarea': {
               resize: 'none',
@@ -319,12 +380,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           sx={{
             alignItems: 'center',
             justifyContent: 'space-between',
-            mt: 1,
-            pt: 0.5,
+            mt: 0.75,
+            pt: 0.25,
           }}
         >
           {/* Left tools: Attachment, Search, Think Mode */}
-          <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+          <Stack direction="row" spacing={{ xs: 0.25, sm: 0.5 }} sx={{ alignItems: 'center' }}>
             <input
               type="file"
               ref={fileInputRef}
@@ -338,9 +399,15 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                 size="small"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={disabled || isStreaming}
-                sx={{ color: 'text.secondary', '&:hover': { color: 'text.primary' } }}
+                aria-label="attach file"
+                sx={{
+                  color: 'text.secondary',
+                  width: { xs: 32, sm: 34 },
+                  height: { xs: 32, sm: 34 },
+                  '&:hover': { color: 'text.primary', bgcolor: 'action.hover' },
+                }}
               >
-                <AttachIcon fontSize="small" />
+                <AttachIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
               </IconButton>
             </AppTooltip>
 
@@ -349,13 +416,16 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               <IconButton
                 size="small"
                 onClick={() => setUseWebSearch((prev) => !prev)}
+                aria-label="toggle web search"
                 sx={{
                   color: useWebSearch ? 'primary.main' : 'text.secondary',
                   bgcolor: useWebSearch ? 'action.selected' : 'transparent',
-                  '&:hover': { color: 'primary.main' },
+                  width: { xs: 32, sm: 34 },
+                  height: { xs: 32, sm: 34 },
+                  '&:hover': { color: 'primary.main', bgcolor: 'action.hover' },
                 }}
               >
-                <WebSearchIcon fontSize="small" />
+                <WebSearchIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
               </IconButton>
             </AppTooltip>
 
@@ -364,29 +434,40 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               <IconButton
                 size="small"
                 onClick={() => setUseDeepThinking((prev) => !prev)}
+                aria-label="toggle reasoning"
                 sx={{
                   color: useDeepThinking ? '#8B5CF6' : 'text.secondary',
                   bgcolor: useDeepThinking ? 'rgba(139, 92, 246, 0.12)' : 'transparent',
-                  '&:hover': { color: '#8B5CF6' },
+                  width: { xs: 32, sm: 34 },
+                  height: { xs: 32, sm: 34 },
+                  '&:hover': { color: '#8B5CF6', bgcolor: 'rgba(139, 92, 246, 0.18)' },
                 }}
               >
-                <ThinkIcon fontSize="small" />
+                <ThinkIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
               </IconButton>
             </AppTooltip>
           </Stack>
 
           {/* Right tools: Voice Recording & Send / Stop Button */}
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Stack direction="row" spacing={{ xs: 0.5, sm: 1 }} sx={{ alignItems: 'center' }}>
             <AppTooltip title={isRecording ? 'Stop listening' : 'Voice input'}>
               <IconButton
                 size="small"
                 onClick={toggleVoiceRecording}
+                aria-label="voice input"
                 sx={{
                   color: isRecording ? 'error.main' : 'text.secondary',
+                  width: { xs: 32, sm: 34 },
+                  height: { xs: 32, sm: 34 },
                   animation: isRecording ? 'pulse 1s infinite' : 'none',
+                  '&:hover': { color: 'text.primary', bgcolor: 'action.hover' },
                 }}
               >
-                {isRecording ? <MicOffIcon fontSize="small" /> : <MicIcon fontSize="small" />}
+                {isRecording ? (
+                  <MicOffIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+                ) : (
+                  <MicIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+                )}
               </IconButton>
             </AppTooltip>
 
@@ -395,15 +476,16 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                 <IconButton
                   size="small"
                   onClick={onStopStreaming}
+                  aria-label="stop generation"
                   sx={{
                     bgcolor: 'error.main',
                     color: '#FFFFFF',
-                    width: 34,
-                    height: 34,
+                    width: { xs: 32, sm: 34 },
+                    height: { xs: 32, sm: 34 },
                     '&:hover': { bgcolor: 'error.dark' },
                   }}
                 >
-                  <StopIcon sx={{ fontSize: 18 }} />
+                  <StopIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
                 </IconButton>
               </AppTooltip>
             ) : (
@@ -413,19 +495,29 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                     size="small"
                     onClick={handleSubmit}
                     disabled={!hasContent || disabled}
+                    aria-label="send message"
                     sx={{
-                      bgcolor: hasContent ? 'primary.main' : 'action.disabledBackground',
+                      background: hasContent
+                        ? (isDark
+                            ? 'linear-gradient(135deg, #00A3FF 0%, #0284C7 100%)'
+                            : 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)')
+                        : 'action.disabledBackground',
+                      boxShadow: hasContent
+                        ? (isDark
+                            ? '0 4px 14px rgba(0, 163, 255, 0.45)'
+                            : '0 4px 14px rgba(2, 132, 199, 0.35)')
+                        : 'none',
                       color: hasContent ? '#FFFFFF' : 'text.disabled',
-                      width: 34,
-                      height: 34,
+                      width: { xs: 32, sm: 34 },
+                      height: { xs: 32, sm: 34 },
                       transition: 'all 0.15s ease',
                       '&:hover': {
-                        bgcolor: hasContent ? 'primary.dark' : 'action.disabledBackground',
-                        transform: hasContent ? 'scale(1.05)' : 'none',
+                        opacity: hasContent ? 0.92 : 1,
+                        transform: hasContent ? 'scale(1.06)' : 'none',
                       },
                     }}
                   >
-                    <SendIcon sx={{ fontSize: 18 }} />
+                    <SendIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
                   </IconButton>
                 </span>
               </AppTooltip>
@@ -441,11 +533,13 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         sx={{
           display: 'block',
           textAlign: 'center',
-          fontSize: '0.72rem',
-          mt: 1,
+          fontSize: { xs: '0.66rem', sm: '0.72rem' },
+          mt: 0.75,
+          px: 1,
+          opacity: 0.85,
         }}
       >
-        AT AI can make mistakes. Verify critical code and architectural decisions.
+        AT AI can make mistakes. Verify important information.
       </Typography>
     </Box>
   );

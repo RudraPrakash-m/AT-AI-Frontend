@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
-import { AutoAwesome as SparklesIcon } from '@mui/icons-material';
+import aashditLogo from '@/assets/aashditLogo-removebg-preview.png';
 
 interface TypingIndicatorProps {
   statusText?: string;
@@ -15,19 +15,20 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1.5, py: 1, px: 0.5 }}>
       <Box
+        component="img"
+        src={aashditLogo}
+        alt="Aashdit AI"
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 28,
-          height: 28,
-          borderRadius: '50%',
-          bgcolor: isDark ? 'rgba(59, 130, 246, 0.15)' : 'rgba(37, 99, 235, 0.1)',
-          color: 'primary.main',
+          width: 24,
+          height: 24,
+          objectFit: 'contain',
+          animation: 'pulseLogo 2s infinite ease-in-out',
+          '@keyframes pulseLogo': {
+            '0%, 100%': { transform: 'scale(1)', opacity: 0.85 },
+            '50%': { transform: 'scale(1.1)', opacity: 1 },
+          },
         }}
-      >
-        <SparklesIcon sx={{ fontSize: 16, animation: 'spin 4s linear infinite' }} />
-      </Box>
+      />
 
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 0.75 }}>
         <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }}>

@@ -35,20 +35,20 @@ export const AppearanceSettings: React.FC<AppearanceSettingsProps> = ({
         bgcolor: 'background.paper',
       }}
     >
-      <CardContent sx={{ p: 3 }}>
-        <Typography variant="h6" sx={{ fontWeight: 700 }} gutterBottom>
+      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, fontSize: { xs: '1.05rem', sm: '1.25rem' } }} gutterBottom>
           Appearance & Theme
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5, fontSize: { xs: '0.82rem', sm: '0.875rem' } }}>
           Customize the aesthetic theme, typography scale, and layout density of your workspace.
         </Typography>
 
         {/* Theme mode selector */}
-        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1.5 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1.5, fontSize: { xs: '0.85rem', sm: '0.875rem' } }}>
           Color Mode
         </Typography>
 
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 3 }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mb: 2.5 }}>
           {[
             { id: 'dark', label: 'Dark Mode', icon: <DarkIcon sx={{ fontSize: 20 }} />, desc: 'Deep graphite & indigo' },
             { id: 'light', label: 'Light Mode', icon: <LightIcon sx={{ fontSize: 20 }} />, desc: 'Clean crisp canvas' },
@@ -63,7 +63,7 @@ export const AppearanceSettings: React.FC<AppearanceSettingsProps> = ({
                 onClick={() => onUpdate('themeMode', modeOption.id as UserSettings['themeMode'])}
                 sx={{
                   flex: 1,
-                  p: 2,
+                  p: { xs: 1.5, sm: 2 },
                   cursor: 'pointer',
                   borderRadius: '12px',
                   border: '2px solid',
@@ -75,14 +75,14 @@ export const AppearanceSettings: React.FC<AppearanceSettingsProps> = ({
                   },
                 }}
               >
-                <Stack spacing={1}>
+                <Stack spacing={0.75}>
                   <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1, color: isSelected ? 'primary.main' : 'text.secondary' }}>
                     {modeOption.icon}
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.875rem' }}>
                       {modeOption.label}
                     </Typography>
                   </Box>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.72rem' }}>
                     {modeOption.desc}
                   </Typography>
                 </Stack>
@@ -91,21 +91,22 @@ export const AppearanceSettings: React.FC<AppearanceSettingsProps> = ({
           })}
         </Stack>
 
-        <Divider sx={{ my: 2.5 }} />
+        <Divider sx={{ my: 2 }} />
 
         {/* Code highlighting */}
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: { xs: '0.85rem', sm: '0.875rem' } }}>
               Syntax Highlighting
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.78rem', sm: '0.85rem' } }}>
               Render rich syntax themes with copy action shortcuts for all markdown code blocks.
             </Typography>
           </Box>
           <Switch
             checked={settings.codeHighlighting}
             onChange={(e) => onUpdate('codeHighlighting', e.target.checked)}
+            sx={{ flexShrink: 0 }}
           />
         </Box>
       </CardContent>

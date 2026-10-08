@@ -9,6 +9,22 @@ export const createComponentOverrides = (theme: Theme): Components<Theme> => {
         body: {
           backgroundColor: theme.palette.background.default,
           color: theme.palette.text.primary,
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+            width: 0,
+            height: 0,
+          },
+        },
+        '*': {
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+            width: 0,
+            height: 0,
+          },
         },
       },
     },
@@ -26,18 +42,19 @@ export const createComponentOverrides = (theme: Theme): Components<Theme> => {
         },
         contained: {
           background: isDark
-            ? 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)'
-            : 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+            ? 'linear-gradient(135deg, #00A3FF 0%, #0284C7 100%)'
+            : 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)',
+          color: '#FFFFFF',
           boxShadow: isDark
-            ? '0 4px 14px 0 rgba(37, 99, 235, 0.35)'
-            : '0 4px 14px 0 rgba(37, 99, 235, 0.25)',
+            ? '0 4px 14px 0 rgba(0, 163, 255, 0.35)'
+            : '0 4px 14px 0 rgba(2, 132, 199, 0.25)',
           '&:hover': {
             background: isDark
-              ? 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)'
-              : 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+              ? 'linear-gradient(135deg, #38BDF8 0%, #00A3FF 100%)'
+              : 'linear-gradient(135deg, #0369A1 0%, #0284C7 100%)',
             boxShadow: isDark
-              ? '0 6px 20px 0 rgba(37, 99, 235, 0.45)'
-              : '0 6px 20px 0 rgba(37, 99, 235, 0.35)',
+              ? '0 6px 20px 0 rgba(0, 163, 255, 0.45)'
+              : '0 6px 20px 0 rgba(2, 132, 199, 0.35)',
             transform: 'translateY(-1px)',
           },
         },
@@ -64,8 +81,8 @@ export const createComponentOverrides = (theme: Theme): Components<Theme> => {
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          backgroundColor: isDark ? '#0D1117' : '#F9FAFB',
-          borderRight: `1px solid ${theme.palette.divider}`,
+          backgroundColor: isDark ? '#070D18' : '#F1F6FB',
+          borderRight: `1px solid ${isDark ? 'rgba(0, 163, 255, 0.12)' : 'rgba(2, 132, 199, 0.12)'}`,
           backgroundImage: 'none',
         },
       },

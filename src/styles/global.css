@@ -13,29 +13,35 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom sleek scrollbar */
+/* Completely hide scrollbars globally across all browsers while preserving scroll functionality */
+* {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+}
+
+*::-webkit-scrollbar,
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+*::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb {
-  background: rgba(140, 140, 140, 0.25);
-  border-radius: 9999px;
-  transition: background 0.2s ease;
+  display: none !important;
+  background: transparent !important;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(140, 140, 140, 0.45);
+*::-webkit-scrollbar-track,
+::-webkit-scrollbar-track {
+  display: none !important;
+  background: transparent !important;
 }
 
 /* Selection */
 ::selection {
-  background: rgba(25, 118, 210, 0.2);
+  background: rgba(0, 163, 255, 0.25);
   color: inherit;
 }
 

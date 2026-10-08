@@ -54,6 +54,7 @@ export const ForgotPasswordPage: React.FC = () => {
     <AuthCard
       title="Reset Password"
       subtitle="Enter your email to receive recovery instructions"
+      backTo="/login"
       footer={
         <Box sx={{ textAlign: 'center' }}>
           <Link
@@ -78,8 +79,8 @@ export const ForgotPasswordPage: React.FC = () => {
           </Typography>
         </Stack>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Stack spacing={2.5}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate style={{ width: '100%' }}>
+          <Stack spacing={{ xs: 2, sm: 2.5 }}>
             {errorMessage && (
               <Alert severity="error" sx={{ borderRadius: '10px' }}>
                 {errorMessage}

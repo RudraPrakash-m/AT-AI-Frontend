@@ -39,39 +39,22 @@ import { useThemeMode } from '@/theme/ThemeContext';
 import { useChatHistory } from '@/features/historyChat/hooks/useChatHistory';
 import { useChatHistorySearch } from '@/features/historyChat/hooks/useChatHistorySearch';
 import { ChatHistoryList } from '@/features/historyChat/components/ChatHistoryList';
+import aashditLogo from '@/assets/aashditLogo-removebg-preview.png';
 
-// Swirl / Knot AI Logo matching ChatGPT aesthetic
-const ATSwirlLogo: React.FC<{ sx?: object }> = ({ sx }) => (
+// Brand Logo Component using Aashdit Logo
+const ATSwirlLogo: React.FC<{ size?: number; sx?: object }> = ({ size = 26, sx }) => (
   <Box
-    component="svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    sx={{ width: 24, height: 24, ...sx }}
-  >
-    <path
-      d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M16.5 8.5C15.8 7.5 14.6 7 13.2 7c-2.3 0-4.2 1.9-4.2 4.2 0 1.2.5 2.3 1.3 3.1"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M7.5 15.5c.7 1 1.9 1.5 3.3 1.5 2.3 0 4.2-1.9 4.2-4.2 0-1.2-.5-2.3-1.3-3.1"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <circle cx="12" cy="12" r="2.2" stroke="currentColor" strokeWidth="1.75" />
-  </Box>
+    component="img"
+    src={aashditLogo}
+    alt="Aashdit Logo"
+    sx={{
+      width: size,
+      height: size,
+      objectFit: 'contain',
+      display: 'inline-block',
+      ...sx,
+    }}
+  />
 );
 
 // Triple Bookshelf / Library Icon matching the screenshot
@@ -225,10 +208,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          py: 1.75,
-          bgcolor: isDark ? '#000000' : '#F9F9FB',
+          bgcolor: isDark ? '#070D18' : '#F1F6FB',
           borderRight: '1px solid',
-          borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+          borderColor: isDark ? 'rgba(0, 163, 255, 0.12)' : 'rgba(2, 132, 199, 0.12)',
           userSelect: 'none',
           boxSizing: 'border-box',
         }}
@@ -243,7 +225,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               mb: 2,
               borderRadius: '12px',
               '&:hover': {
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
+                bgcolor: isDark ? 'rgba(0, 163, 255, 0.1)' : 'rgba(2, 132, 199, 0.08)',
               },
             }}
           >
@@ -256,13 +238,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <IconButton
             onClick={handleStartNewChat}
             sx={{
-              color: isDark ? '#D1D5DB' : '#374151',
+              color: isDark ? '#38BDF8' : '#0284C7',
+              bgcolor: isDark ? 'rgba(0, 163, 255, 0.08)' : 'rgba(2, 132, 199, 0.06)',
               p: 1,
               mb: 1.25,
               borderRadius: '10px',
+              border: '1px solid',
+              borderColor: isDark ? 'rgba(0, 163, 255, 0.18)' : 'rgba(2, 132, 199, 0.14)',
               '&:hover': {
-                color: isDark ? '#FFFFFF' : '#111827',
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                color: isDark ? '#FFFFFF' : '#0369A1',
+                bgcolor: isDark ? 'rgba(0, 163, 255, 0.16)' : 'rgba(2, 132, 199, 0.12)',
+                borderColor: 'primary.main',
               },
             }}
           >
@@ -281,7 +267,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               borderRadius: '10px',
               '&:hover': {
                 color: isDark ? '#FFFFFF' : '#111827',
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                bgcolor: isDark ? 'rgba(0, 163, 255, 0.08)' : 'rgba(2, 132, 199, 0.06)',
               },
             }}
           >
@@ -294,8 +280,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <IconButton
             onClick={() => setActiveFilter((prev) => (prev === 'pinned' ? 'all' : 'pinned'))}
             sx={{
-              color: activeFilter === 'pinned' ? 'primary.main' : isDark ? '#D1D5DB' : '#374151',
-              bgcolor: activeFilter === 'pinned' ? (isDark ? 'rgba(59, 130, 246, 0.15)' : 'rgba(37, 99, 235, 0.1)') : 'transparent',
+              color: activeFilter === 'pinned' ? 'secondary.main' : isDark ? '#D1D5DB' : '#374151',
+              bgcolor: activeFilter === 'pinned' ? (isDark ? 'rgba(245, 158, 11, 0.15)' : 'rgba(245, 158, 11, 0.1)') : 'transparent',
               p: 1,
               mb: 1.25,
               borderRadius: '10px',
@@ -320,7 +306,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               borderRadius: '10px',
               '&:hover': {
                 color: isDark ? '#FFFFFF' : '#111827',
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                bgcolor: isDark ? 'rgba(0, 163, 255, 0.08)' : 'rgba(2, 132, 199, 0.06)',
               },
             }}
           >
@@ -339,7 +325,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               borderRadius: '10px',
               '&:hover': {
                 color: isDark ? '#FFFFFF' : '#111827',
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                bgcolor: isDark ? 'rgba(0, 163, 255, 0.08)' : 'rgba(2, 132, 199, 0.06)',
               },
             }}
           >
@@ -350,7 +336,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Vertical Spacer */}
         <Box sx={{ flex: 1 }} />
 
-        {/* 7. Bottom User Avatar Capsule (Initial RM) */}
+        {/* 7. Bottom User Avatar Capsule (Initial RM) with Aashdit Blue + Golden Amber Gradient */}
         <AppTooltip title={user?.name || 'Rudra Prakash'} placement="right">
           <Box
             onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -358,18 +344,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
               width: 36,
               height: 36,
               borderRadius: '50%',
-              bgcolor: isDark ? '#566171' : '#64748B',
+              background: 'linear-gradient(135deg, #00A3FF 0%, #F59E0B 100%)',
+              boxShadow: '0 2px 10px rgba(0, 163, 255, 0.35)',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 600,
+              fontWeight: 700,
               fontSize: '0.8rem',
               cursor: 'pointer',
               transition: 'transform 0.15s ease, opacity 0.15s ease',
               '&:hover': {
-                transform: 'scale(1.06)',
-                opacity: 0.9,
+                transform: 'scale(1.08)',
+                opacity: 0.95,
               },
             }}
           >
@@ -518,9 +505,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        bgcolor: isDark ? '#000000' : '#F7F7F8',
+        bgcolor: isDark ? '#070D18' : '#F1F6FB',
         borderRight: '1px solid',
-        borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+        borderColor: isDark ? 'rgba(0, 163, 255, 0.12)' : 'rgba(2, 132, 199, 0.12)',
         userSelect: 'none',
       }}
     >
@@ -547,17 +534,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
             px: 0.75,
             py: 0.5,
             borderRadius: '8px',
-            '&:hover': { bgcolor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)' },
+            '&:hover': { bgcolor: isDark ? 'rgba(0, 163, 255, 0.08)' : 'rgba(2, 132, 199, 0.06)' },
           }}
         >
-          <ATSwirlLogo sx={{ fontSize: 20, color: 'text.primary' }} />
+          <ATSwirlLogo sx={{ fontSize: 22 }} />
           <Typography
             variant="subtitle1"
             sx={{
               fontWeight: 700,
               letterSpacing: '-0.02em',
               fontFamily: 'Plus Jakarta Sans, sans-serif',
-              fontSize: '0.92rem',
+              fontSize: '0.94rem',
               color: 'text.primary',
             }}
           >
@@ -599,21 +586,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
             px: 1.5,
             py: 0.85,
             borderRadius: '10px',
-            color: 'text.primary',
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.04)',
+            color: isDark ? '#38BDF8' : '#0284C7',
+            bgcolor: isDark ? 'rgba(0, 163, 255, 0.08)' : 'rgba(2, 132, 199, 0.06)',
             fontWeight: 600,
             fontSize: '0.85rem',
             border: '1px solid',
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
+            borderColor: isDark ? 'rgba(0, 163, 255, 0.2)' : 'rgba(2, 132, 199, 0.16)',
             transition: 'all 0.15s ease',
             '&:hover': {
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.07)',
-              borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.1)',
+              bgcolor: isDark ? 'rgba(0, 163, 255, 0.16)' : 'rgba(2, 132, 199, 0.12)',
+              borderColor: 'primary.main',
             },
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
-            <NewChatIcon sx={{ fontSize: 18, color: 'text.primary' }} />
+            <NewChatIcon sx={{ fontSize: 18 }} />
             <span>New chat</span>
           </Box>
           <ShortcutKey label="Ctrl N" />
@@ -635,16 +622,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
             fontWeight: activeFilter === 'all' ? 600 : 500,
             cursor: 'pointer',
             bgcolor: activeFilter === 'all'
-              ? isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)'
+              ? isDark ? 'rgba(0, 163, 255, 0.14)' : 'rgba(2, 132, 199, 0.1)'
               : 'transparent',
-            color: activeFilter === 'all' ? 'text.primary' : 'text.secondary',
+            color: activeFilter === 'all' ? (isDark ? '#38BDF8' : '#0284C7') : 'text.secondary',
             border: '1px solid',
             borderColor: activeFilter === 'all'
-              ? isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)'
+              ? isDark ? 'rgba(0, 163, 255, 0.25)' : 'rgba(2, 132, 199, 0.2)'
               : 'transparent',
             transition: 'all 0.15s ease',
             '&:hover': {
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
+              bgcolor: isDark ? 'rgba(0, 163, 255, 0.08)' : 'rgba(2, 132, 199, 0.06)',
               color: 'text.primary',
             },
           }}
@@ -666,16 +653,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
             fontWeight: activeFilter === 'pinned' ? 600 : 500,
             cursor: 'pointer',
             bgcolor: activeFilter === 'pinned'
-              ? isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)'
+              ? isDark ? 'rgba(245, 158, 11, 0.16)' : 'rgba(245, 158, 11, 0.12)'
               : 'transparent',
-            color: activeFilter === 'pinned' ? 'text.primary' : 'text.secondary',
+            color: activeFilter === 'pinned' ? 'secondary.main' : 'text.secondary',
             border: '1px solid',
             borderColor: activeFilter === 'pinned'
-              ? isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)'
+              ? isDark ? 'rgba(245, 158, 11, 0.3)' : 'rgba(245, 158, 11, 0.25)'
               : 'transparent',
             transition: 'all 0.15s ease',
             '&:hover': {
-              bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
+              bgcolor: isDark ? 'rgba(245, 158, 11, 0.08)' : 'rgba(245, 158, 11, 0.06)',
               color: 'text.primary',
             },
           }}
@@ -701,7 +688,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               color: 'text.secondary',
               transition: 'all 0.15s ease',
               '&:hover': {
-                bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
+                bgcolor: isDark ? 'rgba(0, 163, 255, 0.08)' : 'rgba(2, 132, 199, 0.06)',
                 color: 'text.primary',
               },
             }}
@@ -711,7 +698,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </AppTooltip>
       </Box>
 
-      <Divider sx={{ mb: 0.5, borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)' }} />
+      <Divider sx={{ mb: 0.5, borderColor: isDark ? 'rgba(0, 163, 255, 0.1)' : 'rgba(2, 132, 199, 0.08)' }} />
 
       {/* Scrollable Clean Temporal Chat History Stream */}
       <ScrollContainer sx={{ px: 1, py: 0.5 }}>
@@ -732,7 +719,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         sx={{
           p: 1.5,
           borderTop: '1px solid',
-          borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+          borderColor: isDark ? 'rgba(0, 163, 255, 0.12)' : 'rgba(2, 132, 199, 0.12)',
         }}
       >
         <Box
@@ -746,7 +733,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             borderRadius: '12px',
             cursor: 'pointer',
             bgcolor: isProfileMenuOpen ? 'action.selected' : 'transparent',
-            '&:hover': { bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)' },
+            '&:hover': { bgcolor: isDark ? 'rgba(0, 163, 255, 0.08)' : 'rgba(2, 132, 199, 0.06)' },
             transition: 'background-color 0.15s ease',
           }}
         >
@@ -756,12 +743,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 width: 32,
                 height: 32,
                 borderRadius: '50%',
-                bgcolor: isDark ? '#566171' : '#64748B',
+                background: 'linear-gradient(135deg, #00A3FF 0%, #F59E0B 100%)',
+                boxShadow: '0 2px 8px rgba(0, 163, 255, 0.3)',
                 color: '#FFFFFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: '0.75rem',
               }}
             >
@@ -771,8 +759,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <Typography variant="body2" noWrap color="text.primary" sx={{ fontWeight: 700, fontSize: '0.82rem', letterSpacing: '0.01em' }}>
                 {user?.name || 'RUDRA PRAKASH MALLICK'}
               </Typography>
-              <Typography variant="caption" color="text.secondary" noWrap sx={{ fontSize: '0.7rem', display: 'block' }}>
-                Go Tier
+              <Typography variant="caption" color="secondary.main" noWrap sx={{ fontSize: '0.7rem', fontWeight: 600, display: 'block' }}>
+                Pro Tier
               </Typography>
             </Box>
           </Box>
