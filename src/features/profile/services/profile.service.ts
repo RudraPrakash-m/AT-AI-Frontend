@@ -17,22 +17,7 @@ const INITIAL_PROFILE: UserProfile = {
   createdAt: new Date().toISOString(),
 };
 
-const INITIAL_KEYS: ApiKeyItem[] = [
-  {
-    id: 'key_1',
-    name: 'Production Server Secret',
-    keyPreview: 'sk-aura-live-••••••••98fe',
-    createdAt: '2026-02-10T14:20:00.000Z',
-    lastUsedAt: '2026-10-06T08:12:00.000Z',
-  },
-  {
-    id: 'key_2',
-    name: 'Local Dev Environment',
-    keyPreview: 'sk-aura-dev-••••••••41b2',
-    createdAt: '2026-03-01T11:00:00.000Z',
-    lastUsedAt: '2026-10-05T19:45:00.000Z',
-  },
-];
+const INITIAL_KEYS: ApiKeyItem[] = [];
 
 class ProfileService {
   private getHeaders(): HeadersInit {
@@ -48,7 +33,7 @@ class ProfileService {
     const cachedUser = storage.get<UserProfile | null>(STORAGE_KEYS.USER_DATA, null);
 
     if (!token) {
-      return cachedUser || storage.get<UserProfile>('aura_user_profile', INITIAL_PROFILE);
+      return cachedUser || storage.get<UserProfile>('at_ai_user_profile', INITIAL_PROFILE);
     }
 
     try {
@@ -66,7 +51,7 @@ class ProfileService {
             bio: data.user.bio || '',
           };
           storage.set(STORAGE_KEYS.USER_DATA, profile);
-          storage.set('aura_user_profile', profile);
+          storage.set('at_ai_user_profile', profile);
           return profile;
         }
       }
@@ -74,7 +59,7 @@ class ProfileService {
       console.warn('Could not fetch remote profile, using local cache:', err);
     }
 
-    return cachedUser || storage.get<UserProfile>('aura_user_profile', INITIAL_PROFILE);
+    return cachedUser || storage.get<UserProfile>('at_ai_user_profile', INITIAL_PROFILE);
   }
 
   async updateProfile(data: Partial<UserProfile>): Promise<UserProfile> {
@@ -101,7 +86,7 @@ class ProfileService {
             bio: resData.user.bio || '',
           };
           storage.set(STORAGE_KEYS.USER_DATA, updatedProfile);
-          storage.set('aura_user_profile', updatedProfile);
+          storage.set('at_ai_user_profile', updatedProfile);
           return updatedProfile;
         }
       } catch (err: any) {
@@ -113,7 +98,7 @@ class ProfileService {
     // Fallback if offline/no token
     const current = await this.getProfile();
     const updated = { ...current, ...data };
-    storage.set('aura_user_profile', updated);
+    storage.set('at_ai_user_profile', updated);
     storage.set(STORAGE_KEYS.USER_DATA, updated);
     return updated;
   }
@@ -181,7 +166,7 @@ class ProfileService {
     const current = await this.getProfile();
     const updated = { ...current, ollamaBaseUrl: data.url };
     storage.set(STORAGE_KEYS.USER_DATA, updated);
-    storage.set('aura_user_profile', updated);
+    storage.set('at_ai_user_profile', updated);
 
     return {
       url: data.url,
@@ -194,7 +179,7 @@ class ProfileService {
 
   async getApiKeys(): Promise<ApiKeyItem[]> {
     await new Promise((resolve) => setTimeout(resolve, 150));
-    return storage.get<ApiKeyItem[]>('aura_api_keys', INITIAL_KEYS);
+    return storage.get<ApiKeyItem[]>('at_ai_api_keys', INITIAL_KEYS);
   }
 
   async createApiKey(name: string): Promise<ApiKeyItem> {
@@ -203,18 +188,18 @@ class ProfileService {
     const newKey: ApiKeyItem = {
       id: generateId('key'),
       name,
-      keyPreview: `sk-aura-live-••••••••${Math.random().toString(16).substring(2, 6)}`,
+      keyPreview: `sk-at-${generateId('live').substring(0, 12)}••••••••`,
       createdAt: new Date().toISOString(),
     };
     const updated = [newKey, ...keys];
-    storage.set('aura_api_keys', updated);
+    storage.set('at_ai_api_keys', updated);
     return newKey;
   }
 
   async deleteApiKey(id: string): Promise<void> {
     const keys = await this.getApiKeys();
     const updated = keys.filter((k) => k.id !== id);
-    storage.set('aura_api_keys', updated);
+    storage.set('at_ai_api_keys', updated);
   }
 
   getUsageMetrics(): UsageMetric[] {

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
 import { ThemeProvider as MuiThemeProvider, CssBaseline } from '@mui/material';
 import { createAppTheme } from './theme';
+import { STORAGE_KEYS } from '@/constants';
 
 type ColorMode = 'light' | 'dark' | 'system';
 
@@ -13,7 +14,7 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const THEME_STORAGE_KEY = 'aura_theme_mode';
+const THEME_STORAGE_KEY = STORAGE_KEYS.THEME_MODE;
 
 export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mode, setModeState] = useState<ColorMode>(() => {

@@ -1,11 +1,11 @@
 export const STORAGE_KEYS = {
-  AUTH_TOKEN: 'aura_auth_token',
-  USER_DATA: 'aura_user_data',
-  THEME_MODE: 'aura_theme_mode',
-  CONVERSATIONS: 'aura_conversations_cache',
-  MESSAGES: 'aura_messages_cache',
-  SETTINGS: 'aura_user_settings',
-  ACTIVE_MODEL: 'aura_active_model',
+  AUTH_TOKEN: 'at_ai_auth_token',
+  USER_DATA: 'at_ai_user_data',
+  THEME_MODE: 'at_ai_theme_mode',
+  CONVERSATIONS: 'at_ai_conversations_cache',
+  MESSAGES: 'at_ai_messages_cache',
+  SETTINGS: 'at_ai_user_settings',
+  ACTIVE_MODEL: 'at_ai_active_model',
 } as const;
 
 export const AVAILABLE_MODELS = [

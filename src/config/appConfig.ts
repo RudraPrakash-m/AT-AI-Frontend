@@ -3,7 +3,7 @@ export const appConfig = {
   tagline: 'Next-Gen Multi-Model Intelligence Studio',
   description: 'Enterprise-grade AI Assistant designed for deep reasoning, fast workflows, and code intelligence.',
   version: '1.2.0-prod',
-  defaultModelId: 'aura-4o',
+  defaultModelId: 'llama3.2',
   sidebarWidth: 260,
   sidebarCollapsedWidth: 56,
   headerHeight: 56,

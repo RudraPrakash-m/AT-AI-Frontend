@@ -29,6 +29,7 @@ import { AppInput } from '@/components/common/ui/AppInput';
 import { AppButton } from '@/components/common/ui/AppButton';
 import { EmptyState } from '@/components/common/ui/EmptyState';
 import { formatDate } from '@/utils/date.utils';
+import { AVAILABLE_MODELS } from '@/constants';
 import { useChatHistory } from '../hooks/useChatHistory';
 import { DeleteChatDialog } from '../components/DeleteChatDialog';
 import type { ChatHistoryItemType } from '../types/historyChat.types';
@@ -135,10 +136,11 @@ export const ChatHistoryPage: React.FC = () => {
                     onChange={(e) => setModelFilter(e.target.value)}
                   >
                     <MenuItem value="all">All Intelligence Models</MenuItem>
-                    <MenuItem value="aura-4o">AT Omni 4.5</MenuItem>
-                    <MenuItem value="aura-sonnet">Sonnet 3.7 Pro</MenuItem>
-                    <MenuItem value="aura-flash">AT Flash 2.0</MenuItem>
-                    <MenuItem value="aura-deepseek">DeepThought R1</MenuItem>
+                    {AVAILABLE_MODELS.map((m) => (
+                      <MenuItem key={m.id} value={m.id}>
+                        {m.name}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>

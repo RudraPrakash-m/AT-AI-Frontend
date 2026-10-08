@@ -187,21 +187,89 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     setAttachments((prev) => prev.filter((a) => a.id !== id));
   };
 
-  const toggleVoiceRecording = () => {
-    if (!isRecording) {
-      setIsRecording(true);
-      setTimeout(() => {
-        setInputMessage((prev) =>
-          prev
-            ? `${prev} How can I optimize memory allocation in Node.js microservices?`
-            : 'How can I optimize memory allocation in Node.js microservices?'
-        );
+  // Voice Input (Web Speech API)
+  const recognitionRef = useRef<any>(null);
+
+  const startVoiceRecording = () => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert('Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.');
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = () => {
+        setIsRecording(true);
+      };
+
+      recognition.onresult = (event: any) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        if (transcript) {
+          setInputMessage((prev) => {
+            const prefix = prev.trim() ? `${prev.trim()} ` : '';
+            return `${prefix}${transcript}`;
+          });
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.warn('Speech recognition notice:', event.error);
         setIsRecording(false);
-      }, 2400);
-    } else {
+      };
+
+      recognition.onend = () => {
+        setIsRecording(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } catch (err) {
+      console.error('Failed to start voice recognition:', err);
       setIsRecording(false);
     }
   };
+
+  const stopVoiceRecording = () => {
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        // ignore
+      }
+      recognitionRef.current = null;
+    }
+    setIsRecording(false);
+  };
+
+  const toggleVoiceRecording = () => {
+    if (isRecording) {
+      stopVoiceRecording();
+    } else {
+      startVoiceRecording();
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {
+          // ignore
+        }
+      }
+    };
+  }, []);
 
   const hasContent = inputMessage.trim().length > 0 || attachments.length > 0;
 

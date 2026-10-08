@@ -148,7 +148,7 @@ export const UsageStatistics: React.FC<UsageStatisticsProps> = ({ profile, metri
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary">
-                    Weekly Tokens Burned
+                    Weekly Tokens Used
                   </Typography>
                   <Typography variant="h6" sx={{ fontWeight: 700 }}>
                     {totalWeeklyTokens.toLocaleString()}

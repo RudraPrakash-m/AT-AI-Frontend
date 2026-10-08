@@ -8,7 +8,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   sendOnEnter: true,
   codeHighlighting: true,
   streamResponses: true,
-  defaultModel: 'aura-4o',
+  defaultModel: 'llama3.2',
   temperature: 0.7,
   topP: 0.95,
   systemPrompt: 'You are AT AI, an expert technical collaborator and software architect. Provide clear, concise, and production-ready responses with code examples.',
