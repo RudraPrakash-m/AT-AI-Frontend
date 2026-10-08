@@ -129,7 +129,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({
       />
 
       {/* Main Conversation Body */}
-      <ScrollContainer ref={scrollContainerRef}>
+      <ScrollContainer ref={scrollContainerRef} sx={{ flex: 1, minHeight: 0 }}>
         {error && (
           <Box sx={{ p: 2, maxWidth: 820, mx: 'auto', width: '100%' }}>
             <Alert severity="error" sx={{ borderRadius: '12px' }}>

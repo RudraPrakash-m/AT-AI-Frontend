@@ -35,10 +35,10 @@ export const UserMessage: React.FC<UserMessageProps> = ({
         width: '100%',
         display: 'flex',
         justifyContent: 'flex-end',
-        py: { xs: 1, sm: 1.5 },
+        py: { xs: 0.75, sm: 1.25 },
       }}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 1, sm: 1.5 }, maxWidth: { xs: '95%', sm: '85%', md: '75%' } }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: { xs: 0.75, sm: 1.25 }, maxWidth: { xs: '90%', sm: '82%', md: '75%' } }}>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', minWidth: 0 }}>
           {isEditing ? (
             <Paper

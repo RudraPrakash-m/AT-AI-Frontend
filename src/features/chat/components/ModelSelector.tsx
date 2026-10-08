@@ -141,7 +141,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
             sx={{
               fontWeight: 600,
               fontSize: { xs: '0.82rem', sm: '0.85rem' },
-              maxWidth: { xs: 180, sm: 220, md: 'none' },
+              maxWidth: { xs: 140, sm: 220, md: 'none' },
               letterSpacing: '-0.01em',
             }}
           >

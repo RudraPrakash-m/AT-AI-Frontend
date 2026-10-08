@@ -54,10 +54,10 @@ export const AssistantMessage: React.FC<AssistantMessageProps> = ({
         width: '100%',
         display: 'flex',
         justifyContent: 'flex-start',
-        py: { xs: 1.5, sm: 2 },
+        py: { xs: 1, sm: 1.75 },
       }}
     >
-      <Stack direction="row" spacing={{ xs: 1, sm: 1.75 }} sx={{ width: '100%', maxWidth: { xs: '100%', md: '92%' } }}>
+      <Stack direction="row" spacing={{ xs: 1, sm: 1.5 }} sx={{ width: '100%', maxWidth: { xs: '100%', md: '92%' } }}>
         <AppAvatar
           size={32}
           src={aashditLogo}

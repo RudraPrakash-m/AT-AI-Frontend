@@ -18,7 +18,8 @@ export const AppLayout: React.FC = () => {
       sx={{
         display: 'flex',
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
+        maxHeight: '100dvh',
         overflow: 'hidden',
         bgcolor: 'background.default',
       }}

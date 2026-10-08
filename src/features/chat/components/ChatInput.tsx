@@ -280,16 +280,17 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         width: '100%',
         maxWidth: 840,
         mx: 'auto',
-        px: { xs: 1.25, sm: 2.5, md: 3 },
-        pb: { xs: 1.25, sm: 2, md: 2.5 },
-        pt: 0.5,
+        flexShrink: 0,
+        px: { xs: 1, sm: 2.5, md: 3 },
+        pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 8px)', sm: 2, md: 2.5 },
+        pt: { xs: 0.25, sm: 0.5 },
       }}
     >
       {/* Floating Scroll-to-Bottom Button - Perfectly Centered horizontally directly above the input box */}
       <Box
         sx={{
           position: 'absolute',
-          top: { xs: -46, sm: -50 },
+          top: { xs: -42, sm: -50 },
           left: 0,
           right: 0,
           display: 'flex',
@@ -601,8 +602,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         sx={{
           display: 'block',
           textAlign: 'center',
-          fontSize: { xs: '0.66rem', sm: '0.72rem' },
-          mt: 0.75,
+          fontSize: { xs: '0.62rem', sm: '0.72rem' },
+          mt: { xs: 0.35, sm: 0.75 },
           px: 1,
           opacity: 0.85,
         }}
