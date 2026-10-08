@@ -1,5 +1,6 @@
 import { STORAGE_KEYS } from '@/constants';
 import { storage } from '@/utils/storage.utils';
+import { getApiUrl } from '@/config/env';
 import type {
   ChatHistoryItemType,
   ChatHistoryFilterOptions,
@@ -38,7 +39,7 @@ class HistoryChatService {
   async getConversations(filters?: ChatHistoryFilterOptions): Promise<ChatHistoryItemType[]> {
     if (this.hasAuth()) {
       try {
-        const res = await fetch('/api/conversations', {
+        const res = await fetch(getApiUrl('/api/conversations'), {
           headers: this.getHeaders(),
         });
         if (res.ok) {
@@ -91,7 +92,7 @@ class HistoryChatService {
   async getConversationById(id: string): Promise<ChatHistoryItemType | null> {
     if (this.hasAuth()) {
       try {
-        const res = await fetch(`/api/conversations/${id}`, {
+        const res = await fetch(getApiUrl(`/api/conversations/${id}`), {
           headers: this.getHeaders(),
         });
         if (res.ok) {
@@ -109,13 +110,12 @@ class HistoryChatService {
     return list.find((item) => item.id === id) || null;
   }
 
-
   async createConversation(
     data: Partial<ChatHistoryItemType> & { title: string }
   ): Promise<ChatHistoryItemType> {
     if (this.hasAuth()) {
       try {
-        const res = await fetch('/api/conversations', {
+        const res = await fetch(getApiUrl('/api/conversations'), {
           method: 'POST',
           headers: this.getHeaders(),
           body: JSON.stringify(data),
@@ -151,7 +151,7 @@ class HistoryChatService {
   async renameConversation(payload: RenameChatPayload): Promise<ChatHistoryItemType> {
     if (this.hasAuth()) {
       try {
-        const res = await fetch(`/api/conversations/${payload.conversationId}`, {
+        const res = await fetch(getApiUrl(`/api/conversations/${payload.conversationId}`), {
           method: 'PUT',
           headers: this.getHeaders(),
           body: JSON.stringify({ title: payload.newTitle }),
@@ -185,7 +185,7 @@ class HistoryChatService {
 
     if (this.hasAuth()) {
       try {
-        const res = await fetch(`/api/conversations/${conversationId}`, {
+        const res = await fetch(getApiUrl(`/api/conversations/${conversationId}`), {
           method: 'PUT',
           headers: this.getHeaders(),
           body: JSON.stringify({ isPinned: nextPinned }),
@@ -216,7 +216,7 @@ class HistoryChatService {
   async deleteConversation(conversationId: string): Promise<boolean> {
     if (this.hasAuth()) {
       try {
-        await fetch(`/api/conversations/${conversationId}`, {
+        await fetch(getApiUrl(`/api/conversations/${conversationId}`), {
           method: 'DELETE',
           headers: this.getHeaders(),
         });
@@ -232,7 +232,7 @@ class HistoryChatService {
   async clearAllConversations(): Promise<boolean> {
     if (this.hasAuth()) {
       try {
-        await fetch('/api/conversations', {
+        await fetch(getApiUrl('/api/conversations'), {
           method: 'DELETE',
           headers: this.getHeaders(),
         });

@@ -1,6 +1,7 @@
 import { generateId } from '@/utils/string.utils';
 import { AVAILABLE_MODELS, STORAGE_KEYS } from '@/constants';
 import { storage } from '@/utils/storage.utils';
+import { getApiUrl } from '@/config/env';
 import type { ChatMessageEntity, SendMessagePayload } from '../types/chat.types';
 
 // In-memory runtime session store fallback
@@ -19,15 +20,16 @@ class ChatService {
     const token = storage.get<string | null>(STORAGE_KEYS.AUTH_TOKEN, null);
     if (token) {
       try {
-        let res = await fetch(`/api/conversations/${conversationId}/messages`, {
+        let res = await fetch(getApiUrl(`/api/conversations/${conversationId}/messages`), {
           headers: this.getHeaders(),
         });
 
         if (!res.ok) {
-          res = await fetch(`/api/conversations/${conversationId}`, {
+          res = await fetch(getApiUrl(`/api/conversations/${conversationId}`), {
             headers: this.getHeaders(),
           });
         }
+
 
         if (res.ok) {
           const data = await res.json();
@@ -192,7 +194,7 @@ class ChatService {
         accumulatedText = '';
 
         // Call Express backend SSE endpoint with user auth
-        const response = await fetch('/api/chat', {
+        const response = await fetch(getApiUrl('/api/chat'), {
           method: 'POST',
           headers: this.getHeaders(),
           body: JSON.stringify({
@@ -201,6 +203,7 @@ class ChatService {
             temperature: 0.7,
             conversationId,
             userMessageContent: payload.content,
+
             attachments: payload.attachments,
             webSearchUsed: Boolean(payload.useWebSearch),
           }),

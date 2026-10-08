@@ -1,5 +1,6 @@
 import { STORAGE_KEYS } from '@/constants';
 import { storage } from '@/utils/storage.utils';
+import { getApiUrl } from '@/config/env';
 import type { User } from '@/types';
 import type {
   LoginCredentials,
@@ -22,7 +23,7 @@ class AuthService {
   }
 
   async register(credentials: RegisterCredentials): Promise<RegisterResponse> {
-    const res = await fetch('/api/auth/register', {
+    const res = await fetch(getApiUrl('/api/auth/register'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -41,7 +42,7 @@ class AuthService {
   }
 
   async verifyOtp(payload: VerifyOtpPayload): Promise<AuthResponse> {
-    const res = await fetch('/api/auth/verify-otp', {
+    const res = await fetch(getApiUrl('/api/auth/verify-otp'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -61,7 +62,7 @@ class AuthService {
   }
 
   async resendOtp(payload: ResendOtpPayload): Promise<{ success: boolean; message: string; devOtp?: string }> {
-    const res = await fetch('/api/auth/resend-otp', {
+    const res = await fetch(getApiUrl('/api/auth/resend-otp'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -76,7 +77,7 @@ class AuthService {
   }
 
   async login(credentials: LoginCredentials): Promise<LoginResult> {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch(getApiUrl('/api/auth/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -106,7 +107,7 @@ class AuthService {
     if (!token) return null;
 
     try {
-      const res = await fetch('/api/auth/me', {
+      const res = await fetch(getApiUrl('/api/auth/me'), {
         headers: this.getHeaders(),
       });
 
@@ -133,7 +134,7 @@ class AuthService {
   }
 
   async forgotPassword(email: string): Promise<{ success: boolean; message: string }> {
-    const res = await fetch('/api/auth/forgot-password', {
+    const res = await fetch(getApiUrl('/api/auth/forgot-password'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -148,7 +149,7 @@ class AuthService {
   }
 
   async resetPassword(payload: ResetPasswordPayload): Promise<{ success: boolean; message: string }> {
-    const res = await fetch('/api/auth/reset-password', {
+    const res = await fetch(getApiUrl('/api/auth/reset-password'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -164,4 +165,5 @@ class AuthService {
 }
 
 export const authService = new AuthService();
+
 
