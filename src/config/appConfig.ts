@@ -1,0 +1,22 @@
+export const appConfig = {
+  name: 'AT AI',
+  tagline: 'Next-Gen Multi-Model Intelligence Studio',
+  description: 'Enterprise-grade AI Assistant designed for deep reasoning, fast workflows, and code intelligence.',
+  version: '1.2.0-prod',
+  defaultModelId: 'aura-4o',
+  sidebarWidth: 260,
+  sidebarCollapsedWidth: 56,
+  headerHeight: 56,
+  chatInputMaxHeight: 200,
+  routes: {
+    home: '/',
+    chat: '/chat',
+    chatConversation: '/chat/:conversationId',
+    history: '/history',
+    settings: '/settings',
+    profile: '/profile',
+    login: '/login',
+    register: '/register',
+    forgotPassword: '/forgot-password',
+  },
+};

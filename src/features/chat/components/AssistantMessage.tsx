@@ -1,0 +1,265 @@
+import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import {
+  Box,
+  Stack,
+  Typography,
+  Chip,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  useTheme,
+  Link,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@mui/material';
+import {
+  AutoAwesome as SparklesIcon,
+  ExpandMore as ExpandMoreIcon,
+  Psychology as ThinkingIcon,
+  Language as WebIcon,
+} from '@mui/icons-material';
+import { AppAvatar } from '@/components/common/ui/AppAvatar';
+import { formatTime } from '@/utils/date.utils';
+import type { ChatMessageEntity } from '../types/chat.types';
+import { CodeBlock } from './CodeBlock';
+import { MessageActions } from './MessageActions';
+
+interface AssistantMessageProps {
+  message: ChatMessageEntity;
+  onRegenerate?: () => void;
+  onLikeToggle?: () => void;
+  onDislikeToggle?: () => void;
+}
+
+export const AssistantMessage: React.FC<AssistantMessageProps> = ({
+  message,
+  onRegenerate,
+  onLikeToggle,
+  onDislikeToggle,
+}) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  const [showThinking, setShowThinking] = useState(false);
+
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        py: 2,
+      }}
+    >
+      <Stack direction="row" spacing={2} sx={{ width: '100%', maxWidth: { xs: '100%', md: '88%' } }}>
+        <AppAvatar
+          size={34}
+          status="ai"
+          sx={{
+            background: 'linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)',
+            boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
+          }}
+        >
+          <SparklesIcon sx={{ fontSize: 18, color: '#FFFFFF' }} />
+        </AppAvatar>
+
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          {/* Header row: Model tag & features */}
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1, flexWrap: 'wrap' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'text.primary' }}>
+              {message.modelName || 'AT AI Assistant'}
+            </Typography>
+
+            {message.webSearchUsed && (
+              <Chip
+                icon={<WebIcon sx={{ fontSize: '13px !important' }} />}
+                label="Web Verified"
+                size="small"
+                variant="outlined"
+                sx={{ height: 20, fontSize: '0.68rem' }}
+              />
+            )}
+
+            <Typography variant="caption" color="text.disabled" sx={{ fontSize: '0.7rem' }}>
+              {formatTime(message.createdAt)}
+            </Typography>
+          </Stack>
+
+          {/* Collapsible Deep Reasoning / Thinking Section */}
+          {message.thinking && (
+            <Accordion
+              expanded={showThinking}
+              onChange={() => setShowThinking((prev) => !prev)}
+              disableGutters
+              elevation={0}
+              sx={{
+                mb: 2,
+                borderRadius: '10px !important',
+                border: '1px solid',
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+                bgcolor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.02)',
+                '&::before': { display: 'none' },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon sx={{ fontSize: 16 }} />}
+                sx={{
+                  minHeight: 36,
+                  px: 1.5,
+                  py: 0.5,
+                  '& .MuiAccordionSummary-content': { my: 0.5, alignItems: 'center', gap: 1 },
+                }}
+              >
+                <ThinkingIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+                <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                  Reasoning Process & Step-by-Step Analysis
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ px: 1.5, pt: 0, pb: 1.5 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{
+                    whiteSpace: 'pre-wrap',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '0.75rem',
+                    display: 'block',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {message.thinking}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          )}
+
+          {/* Markdown Content Area */}
+          <Box
+            sx={{
+              color: 'text.primary',
+              fontSize: '0.94rem',
+              lineHeight: 1.7,
+              wordBreak: 'break-word',
+              '& h1, & h2, & h3, & h4': {
+                fontFamily: 'Plus Jakarta Sans, Inter, sans-serif',
+                fontWeight: 700,
+                mt: 2,
+                mb: 1,
+                color: 'text.primary',
+              },
+              '& h3': { fontSize: '1.15rem' },
+              '& h4': { fontSize: '1rem' },
+              '& p': { my: 1 },
+              '& ul, & ol': { pl: 3, my: 1 },
+              '& li': { my: 0.5 },
+              '& strong': { fontWeight: 600, color: 'text.primary' },
+              '& code:not(pre code)': {
+                bgcolor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+                color: isDark ? '#93C5FD' : '#1D4ED8',
+                px: 0.75,
+                py: 0.25,
+                borderRadius: '6px',
+                fontSize: '0.86rem',
+                fontFamily: 'JetBrains Mono, monospace',
+              },
+              '& blockquote': {
+                borderLeft: `3px solid ${theme.palette.primary.main}`,
+                pl: 2,
+                my: 1.5,
+                color: 'text.secondary',
+                fontStyle: 'italic',
+              },
+            }}
+          >
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                code({ className, children, ...props }) {
+                  const match = /language-(\w+)/.exec(className || '');
+                  const codeContent = String(children).replace(/\n$/, '');
+                  const isInline = !match && !String(children).includes('\n');
+
+                  if (!isInline && (match || codeContent.includes('\n'))) {
+                    return <CodeBlock language={match ? match[1] : 'text'} code={codeContent} />;
+                  }
+                  return (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+                a({ href, children }) {
+                  return (
+                    <Link
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      color="primary"
+                      underline="hover"
+                      sx={{ fontWeight: 500 }}
+                    >
+                      {children}
+                    </Link>
+                  );
+                },
+                table({ children }) {
+                  return (
+                    <TableContainer
+                      component={Paper}
+                      elevation={0}
+                      sx={{
+                        my: 2,
+                        borderRadius: '10px',
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        maxWidth: '100%',
+                      }}
+                    >
+                      <Table size="small">{children}</Table>
+                    </TableContainer>
+                  );
+                },
+                thead({ children }) {
+                  return <TableHead sx={{ bgcolor: 'action.hover' }}>{children}</TableHead>;
+                },
+                tbody({ children }) {
+                  return <TableBody>{children}</TableBody>;
+                },
+                tr({ children }) {
+                  return <TableRow>{children}</TableRow>;
+                },
+                th({ children }) {
+                  return (
+                    <TableCell sx={{ fontWeight: 700, fontSize: '0.85rem' }}>{children}</TableCell>
+                  );
+                },
+                td({ children }) {
+                  return <TableCell sx={{ fontSize: '0.85rem' }}>{children}</TableCell>;
+                },
+              }}
+            >
+              {message.content}
+            </ReactMarkdown>
+          </Box>
+
+          {/* Action Row */}
+          <MessageActions
+            content={message.content}
+            role="assistant"
+            onRegenerate={onRegenerate}
+            onLikeToggle={onLikeToggle}
+            onDislikeToggle={onDislikeToggle}
+            isLiked={message.isLiked}
+            isDisliked={message.isDisliked}
+          />
+        </Box>
+      </Stack>
+    </Box>
+  );
+};
